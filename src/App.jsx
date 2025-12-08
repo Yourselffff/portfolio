@@ -103,10 +103,30 @@ const sections = [
     color: '#00ffff', // Cyan
     type: 'projects', // Reusing project card layout for detailed info
     items: [
-      { title: 'Fonctionnement Global', tech: 'Réseaux de Neurones', desc: 'Imitation du cerveau humain via des couches de neurones artificiels. Chaque neurone traite une information et la transmet pondérée aux suivants.' },
-      { title: 'Apprentissage (Deep Learning)', tech: 'Training', desc: 'Le modèle apprend par l\'expérience sur de grands datasets. Ajustement des "poids" synaptiques par rétropropagation de l\'erreur.' },
-      { title: 'Création d\'une IA', tech: 'Workflow', desc: '1. Collecte & Nettoyage des Données (Big Data). \n2. Choix de l\'architecture (CNN, RNN, Transformers). \n3. Entraînement & Validation.' },
-      { title: 'Technologies Phares', tech: 'Stack', desc: 'Python est le langage roi, appuyé par des bibliothèques puissantes comme TensorFlow, PyTorch et Scikit-learn.' }
+      {
+        title: 'Fonctionnement Global',
+        tech: 'Réseaux de Neurones',
+        desc: 'Imitation du cerveau humain via des couches de neurones artificiels.',
+        longDesc: "Les réseaux de neurones (ANN) sont composés de couches d'unités de calcul interconnectées. \n\n• **Couche d'entrée** : Reçoit les données brutes.\n• **Couches cachées** : Effectuent des transformations mathématiques complexes (fonctions d'activation type ReLU, Sigmoid).\n• **Couche de sortie** : Produit le résultat final (probabilité, classification).\n\nLe 'savoir' du réseau réside dans les poids de chaque connexion, ajustés durant l'entraînement."
+      },
+      {
+        title: 'Apprentissage',
+        tech: 'Deep Learning',
+        desc: 'Le modèle apprend par l\'expérience et la rétropropagation.',
+        longDesc: "Le processus d'apprentissage repose sur la minimisation d'une fonction d'erreur (Loss Function).\n\n1. **Forward Propagation** : La donnée traverse le réseau pour produire une prédiction.\n2. **Calcul de l'erreur** : Comparaison avec la vérité terrain.\n3. **Backpropagation** : L'algorithme de descente de gradient (Gradient Descent) remonte le réseau pour ajuster les poids synaptiques et réduire l'erreur future."
+      },
+      {
+        title: 'Workflow de Création',
+        tech: 'Data Science',
+        desc: 'De la donnée brute au modèle déployé.',
+        longDesc: "Le cycle de vie d'une IA est rigoureux :\n\n1. **Data Engineering** : Collecte, nettoyage et normalisation des datasets (ETL).\n2. **Architecture** : Sélection du modèle (CNN pour l'image, Transformers pour le NLP, RNN pour les séquences).\n3. **Training** : Entraînement sur GPU/TPU avec ajustement des hyperparamètres.\n4. **Validation** : Test sur des données jamais vues pour éviter le surapprentissage (Overfitting)."
+      },
+      {
+        title: 'Technologies Phares',
+        tech: 'Stack Python',
+        desc: 'L\'écosystème open-source dominant.',
+        longDesc: "Python est le langage incontournable grâce à ses bibliothèques puissantes :\n\n• **TensorFlow / Keras** (Google) : Pour la production et le déploiement mobile/JS.\n• **PyTorch** (Meta) : Prisé par la recherche pour sa flexibilité.\n• **Scikit-learn** : Pour les algorithmes de Machine Learning classiques (Régression, Clustering).\n• **Pandas & NumPy** : Pour la manipulation haute performance de données structurées."
+      }
     ]
   },
   {
