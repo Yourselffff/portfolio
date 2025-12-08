@@ -62,11 +62,36 @@ const sections = [
     color: '#00bfff',
     type: 'projects',
     items: [
-      { title: 'MtBeat', tech: 'Java Swing / SQL', desc: 'Application de gestion de repas entre collègues.', longDesc: "Projet de groupe réalisé dans le cadre du cours d'ADP (Analyse et Développement de Projets). L'objectif était de concevoir une application lourde complète en Java pour faciliter l'organisation des repas du midi entre collègues. Gestion des votes, des lieux et des participations." },
-      { title: 'RFTG Mobile', tech: 'Android / Java', desc: 'App mobile de location de films.', longDesc: "Application mobile native développée sous Android Studio. Elle permet aux utilisateurs de consulter un catalogue de films, de voir les détails et de simuler la location de médias. Focus sur l'expérience utilisateur mobile." },
-      { title: 'RFTG Admin', tech: 'Laravel / PHP', desc: 'Back-office de gestion de stock.', longDesc: "Interface web d'administration développée avec Laravel. Elle permet aux gérants de piloter l'application mobile : gestion du stock de films, CRUD des utilisateurs, suivi des locations et statistiques." },
-      { title: 'Portail Assurance', tech: 'Laravel / Docker', desc: 'Application web complète pour la gestion de contrats d\'assurance.', longDesc: "Développement en entreprise pour répondre à des besoins clients spécifiques. Le projet inclut la gestion du cycle de vie des contrats d'assurance et la maintenance évolutive de l'application existante sous Docker." },
-      { title: 'Outils Internes', tech: 'Angular / API', desc: 'Refonte applications internes en Web App Fullstack.', longDesc: "Développement et modernisation des outils internes de l'entreprise. Utilisation du framework Angular pour créer une interface web reactive (Single Page Application) et optimiser les flux métiers, en remplacement d'anciennes solutions." }
+      {
+        title: 'MtBeat',
+        tech: 'Java Swing / SQL',
+        desc: 'Solution collaborative de gestion de pauses déjeuner.',
+        longDesc: "Conception complète d'une architecture N-Tiers en Java pur. \n\n• **Architecture** : implémentation stricte du pattern MVC pour découpler la logique métier de l'interface Swing.\n• **Technique** : Utilisation de JDBC avec le pattern DAO pour une persistance robuste. Création de composants graphiques personnalisés (Custom Renderers) pour une UI fluide.\n• **Fonctionnel** : Algorithme de pondération des votes pour le choix du restaurant et synchronisation multi-utilisateurs via base de données centralisée."
+      },
+      {
+        title: 'RFTG Mobile',
+        tech: 'Android / Java',
+        desc: 'Application native Android de Vidéo à la Demande (VOD).',
+        longDesc: "Développement natif orienté performance et UX sous Android Studio.\n\n• **Architecture** : Pattern MVVM (Model-View-ViewModel) pour une testabilité accrue et une meilleure gestion du cycle de vie des Activités/Fragments.\n• **Network** : Consommation d'API RESTful via Retrofit avec gestion asynchrone des appels.\n• **Performance** : Optimisation des listes infinies avec RecyclerView et chargement différé des images (Lazy Loading).\n• **Persistence** : Implémentation de SQLite/Room pour le cache local et le mode hors-ligne."
+      },
+      {
+        title: 'RFTG Admin',
+        tech: 'Laravel / PHP',
+        desc: 'Plateforme Web d\'Administration (Back-Office).',
+        longDesc: "Création d'un écosystème d'administration puissant et sécurisé.\n\n• **Backend** : Utilisation avancée de l'ORM Eloquent (Relations polymorphes, Scopes, Mutators) pour une manipulation de données complexe.\n• **Sécurité** : Système d'authentification et d'autorisation granulaires (Middlewares, Policies & Gates).\n• **Frontend** : Intégration de Chart.js pour la visualisation de données statistiques en temps réel et interface Blade modulaire."
+      },
+      {
+        title: 'Portail Assurance',
+        tech: 'Laravel / Docker',
+        desc: 'Écosystème digital de gestion de contrats d\'assurance.',
+        longDesc: "Intervention sur une infrastructure critique en environnement DevOps.\n\n• **DevOps** : Conteneurisation complète de la stack applicative (Nginx, PHP-FPM, MySQL) via Docker Compose pour garantir la parité Dev/Prod.\n• **Backend** : Développement d'API robustes pour l'interconnexion avec des services tiers (Banque, CRM).\n• **Qualité** : Mise en place de tests unitaires (PHPUnit) et respect des standards PSR-12."
+      },
+      {
+        title: 'Outils Internes',
+        tech: 'Angular / API',
+        desc: 'Modernisation et refonte d\'outils métiers (SPA).',
+        longDesc: "Refonte architecturelle majeure vers une Single Page Application réactive.\n\n• **Core** : Utilisation intensive de TypeScript et RxJS pour la gestion d'états asynchrones complexes (Observables, Subjects).\n• **Architecture** : Organisation modulaire avec Lazy Loading pour optimiser le temps de chargement initial (Time-to-Interactive).\n• **Sécurité** : Intercepteurs HTTP pour la gestion automatique des tokens JWT et sécurisation des routes (Guards)."
+      }
     ]
   },
   {
