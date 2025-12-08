@@ -66,31 +66,31 @@ const sections = [
         title: 'MtBeat',
         tech: 'Java Swing / SQL',
         desc: 'Solution collaborative de gestion de pauses déjeuner.',
-        longDesc: "Conception complète d'une architecture N-Tiers en Java pur. \n\n• **Architecture** : implémentation stricte du pattern MVC pour découpler la logique métier de l'interface Swing.\n• **Technique** : Utilisation de JDBC avec le pattern DAO pour une persistance robuste. Création de composants graphiques personnalisés (Custom Renderers) pour une UI fluide.\n• **Fonctionnel** : Algorithme de pondération des votes pour le choix du restaurant et synchronisation multi-utilisateurs via base de données centralisée."
+        longDesc: "Conception complète d'une architecture N-Tiers en Java pur. \n\n• Architecture : implémentation stricte du pattern MVC pour découpler la logique métier de l'interface Swing.\n• Technique : Utilisation de JDBC avec le pattern DAO pour une persistance robuste. Création de composants graphiques personnalisés (Custom Renderers) pour une UI fluide.\n• Fonctionnel : Algorithme de pondération des votes pour le choix du restaurant et synchronisation multi-utilisateurs via base de données centralisée."
       },
       {
         title: 'RFTG Mobile',
         tech: 'Android / Java',
         desc: 'Application native Android de Vidéo à la Demande (VOD).',
-        longDesc: "Développement natif orienté performance et UX sous Android Studio.\n\n• **Architecture** : Pattern MVVM (Model-View-ViewModel) pour une testabilité accrue et une meilleure gestion du cycle de vie des Activités/Fragments.\n• **Network** : Consommation d'API RESTful via Retrofit avec gestion asynchrone des appels.\n• **Performance** : Optimisation des listes infinies avec RecyclerView et chargement différé des images (Lazy Loading).\n• **Persistence** : Implémentation de SQLite/Room pour le cache local et le mode hors-ligne."
+        longDesc: "Développement natif orienté performance et UX sous Android Studio.\n\n• Architecture : Pattern MVVM (Model-View-ViewModel) pour une testabilité accrue et une meilleure gestion du cycle de vie des Activités/Fragments.\n• Network : Consommation d'API RESTful via Retrofit avec gestion asynchrone des appels.\n• Performance : Optimisation des listes infinies avec RecyclerView et chargement différé des images (Lazy Loading).\n• Persistence : Implémentation de SQLite/Room pour le cache local et le mode hors-ligne."
       },
       {
         title: 'RFTG Admin',
         tech: 'Laravel / PHP',
         desc: 'Plateforme Web d\'Administration (Back-Office).',
-        longDesc: "Création d'un écosystème d'administration puissant et sécurisé.\n\n• **Backend** : Utilisation avancée de l'ORM Eloquent (Relations polymorphes, Scopes, Mutators) pour une manipulation de données complexe.\n• **Sécurité** : Système d'authentification et d'autorisation granulaires (Middlewares, Policies & Gates).\n• **Frontend** : Intégration de Chart.js pour la visualisation de données statistiques en temps réel et interface Blade modulaire."
+        longDesc: "Création d'un écosystème d'administration puissant et sécurisé.\n\n• Backend : Utilisation avancée de l'ORM Eloquent (Relations polymorphes, Scopes, Mutators) pour une manipulation de données complexe.\n• Sécurité : Système d'authentification et d'autorisation granulaires (Middlewares, Policies & Gates).\n• Frontend : Intégration de Chart.js pour la visualisation de données statistiques en temps réel et interface Blade modulaire."
       },
       {
         title: 'Portail Assurance',
         tech: 'Laravel / Docker',
         desc: 'Écosystème digital de gestion de contrats d\'assurance.',
-        longDesc: "Intervention sur une infrastructure critique en environnement DevOps.\n\n• **DevOps** : Conteneurisation complète de la stack applicative (Nginx, PHP-FPM, MySQL) via Docker Compose pour garantir la parité Dev/Prod.\n• **Backend** : Développement d'API robustes pour l'interconnexion avec des services tiers (Banque, CRM).\n• **Qualité** : Mise en place de tests unitaires (PHPUnit) et respect des standards PSR-12."
+        longDesc: "Intervention sur une infrastructure critique en environnement DevOps.\n\n• DevOps : Conteneurisation complète de la stack applicative (Nginx, PHP-FPM, MySQL) via Docker Compose pour garantir la parité Dev/Prod.\n• Backend : Développement d'API robustes pour l'interconnexion avec des services tiers (Banque, CRM).\n• Qualité : Mise en place de tests unitaires (PHPUnit) et respect des standards PSR-12."
       },
       {
         title: 'Outils Internes',
         tech: 'Angular / API',
         desc: 'Modernisation et refonte d\'outils métiers (SPA).',
-        longDesc: "Refonte architecturelle majeure vers une Single Page Application réactive.\n\n• **Core** : Utilisation intensive de TypeScript et RxJS pour la gestion d'états asynchrones complexes (Observables, Subjects).\n• **Architecture** : Organisation modulaire avec Lazy Loading pour optimiser le temps de chargement initial (Time-to-Interactive).\n• **Sécurité** : Intercepteurs HTTP pour la gestion automatique des tokens JWT et sécurisation des routes (Guards)."
+        longDesc: "Refonte architecturelle majeure vers une Single Page Application réactive.\n\n• Core : Utilisation intensive de TypeScript et RxJS pour la gestion d'états asynchrones complexes (Observables, Subjects).\n• Architecture : Organisation modulaire avec Lazy Loading pour optimiser le temps de chargement initial (Time-to-Interactive).\n• Sécurité : Intercepteurs HTTP pour la gestion automatique des tokens JWT et sécurisation des routes (Guards)."
       }
     ]
   },
@@ -107,25 +107,25 @@ const sections = [
         title: 'Fonctionnement Global',
         tech: 'Réseaux de Neurones',
         desc: 'Imitation du cerveau humain via des couches de neurones artificiels.',
-        longDesc: "Les réseaux de neurones (ANN) sont composés de couches d'unités de calcul interconnectées. \n\n• **Couche d'entrée** : Reçoit les données brutes.\n• **Couches cachées** : Effectuent des transformations mathématiques complexes (fonctions d'activation type ReLU, Sigmoid).\n• **Couche de sortie** : Produit le résultat final (probabilité, classification).\n\nLe 'savoir' du réseau réside dans les poids de chaque connexion, ajustés durant l'entraînement."
+        longDesc: "Les réseaux de neurones (ANN) sont composés de couches d'unités de calcul interconnectées. \n\n• Couche d'entrée : Reçoit les données brutes.\n• Couches cachées : Effectuent des transformations mathématiques complexes (fonctions d'activation type ReLU, Sigmoid).\n• Couche de sortie : Produit le résultat final (probabilité, classification).\n\nLe 'savoir' du réseau réside dans les poids de chaque connexion, ajustés durant l'entraînement."
       },
       {
         title: 'Apprentissage',
         tech: 'Deep Learning',
         desc: 'Le modèle apprend par l\'expérience et la rétropropagation.',
-        longDesc: "Le processus d'apprentissage repose sur la minimisation d'une fonction d'erreur (Loss Function).\n\n1. **Forward Propagation** : La donnée traverse le réseau pour produire une prédiction.\n2. **Calcul de l'erreur** : Comparaison avec la vérité terrain.\n3. **Backpropagation** : L'algorithme de descente de gradient (Gradient Descent) remonte le réseau pour ajuster les poids synaptiques et réduire l'erreur future."
+        longDesc: "Le processus d'apprentissage repose sur la minimisation d'une fonction d'erreur (Loss Function).\n\n1. Forward Propagation : La donnée traverse le réseau pour produire une prédiction.\n2. Calcul de l'erreur : Comparaison avec la vérité terrain.\n3. Backpropagation : L'algorithme de descente de gradient (Gradient Descent) remonte le réseau pour ajuster les poids synaptiques et réduire l'erreur future."
       },
       {
         title: 'Workflow de Création',
         tech: 'Data Science',
         desc: 'De la donnée brute au modèle déployé.',
-        longDesc: "Le cycle de vie d'une IA est rigoureux :\n\n1. **Data Engineering** : Collecte, nettoyage et normalisation des datasets (ETL).\n2. **Architecture** : Sélection du modèle (CNN pour l'image, Transformers pour le NLP, RNN pour les séquences).\n3. **Training** : Entraînement sur GPU/TPU avec ajustement des hyperparamètres.\n4. **Validation** : Test sur des données jamais vues pour éviter le surapprentissage (Overfitting)."
+        longDesc: "Le cycle de vie d'une IA est rigoureux :\n\n1. Data Engineering : Collecte, nettoyage et normalisation des datasets (ETL).\n2. Architecture : Sélection du modèle (CNN pour l'image, Transformers pour le NLP, RNN pour les séquences).\n3. Training : Entraînement sur GPU/TPU avec ajustement des hyperparamètres.\n4. Validation : Test sur des données jamais vues pour éviter le surapprentissage (Overfitting)."
       },
       {
         title: 'Technologies Phares',
         tech: 'Stack Python',
         desc: 'L\'écosystème open-source dominant.',
-        longDesc: "Python est le langage incontournable grâce à ses bibliothèques puissantes :\n\n• **TensorFlow / Keras** (Google) : Pour la production et le déploiement mobile/JS.\n• **PyTorch** (Meta) : Prisé par la recherche pour sa flexibilité.\n• **Scikit-learn** : Pour les algorithmes de Machine Learning classiques (Régression, Clustering).\n• **Pandas & NumPy** : Pour la manipulation haute performance de données structurées."
+        longDesc: "Python est le langage incontournable grâce à ses bibliothèques puissantes :\n\n• TensorFlow / Keras (Google) : Pour la production et le déploiement mobile/JS.\n• PyTorch (Meta) : Prisé par la recherche pour sa flexibilité.\n• Scikit-learn : Pour les algorithmes de Machine Learning classiques (Régression, Clustering).\n• Pandas & NumPy : Pour la manipulation haute performance de données structurées."
       }
     ]
   },
@@ -422,6 +422,35 @@ const Section = ({ data, direction }) => {
           <div className="planet-glow" style={{ background: data.color }} />
         </div>
       </div>
+
+      {/* Project Detail Modal */}
+      <AnimatePresence>
+        {expandedItem && (
+          <motion.div
+            className="modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setExpandedItem(null)} // Close on bg click
+          >
+            <motion.div
+              className="modal-content"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()} // Prevent close on content click
+              style={{ borderColor: data.color }}
+            >
+              <button className="modal-close" onClick={() => setExpandedItem(null)}>✕</button>
+              <h2 style={{ color: data.color, marginBottom: '0.5rem', fontFamily: 'var(--font-header)' }}>{expandedItem.title}</h2>
+              <div style={{ marginBottom: '1.5rem', color: '#888', fontStyle: 'italic' }}>{expandedItem.tech}</div>
+              <p style={{ lineHeight: '1.6', fontSize: '1.1rem', whiteSpace: 'pre-line' }}>
+                {expandedItem.longDesc || expandedItem.desc}
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   )
 }
