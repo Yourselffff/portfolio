@@ -135,18 +135,13 @@ export default function App() {
     const handleWheel = (e) => {
       if (isTransitioning.current) return;
 
-      // Check if scroll event happens inside the text content
+      // Strict isolation: If cursor is over text content, NEVER switch planet
+      // Strict isolation: If cursor is over text content, NEVER switch planet.
+      // We process the scroll event ONLY if it happens outside the text card.
       const textContent = e.target.closest('.text-content');
       if (textContent) {
-        const { scrollTop, scrollHeight, clientHeight } = textContent;
-        const isAtTop = scrollTop === 0;
-        const isAtBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
-
-        // If scrolling down and NOT at bottom, let it scroll text
-        if (e.deltaY > 0 && !isAtBottom) return;
-
-        // If scrolling up and NOT at top, let it scroll text
-        if (e.deltaY < 0 && !isAtTop) return;
+        e.stopPropagation(); // Stop event bubbling just in case
+        return;
       }
 
       const threshold = 30; // Minimum scroll delta
