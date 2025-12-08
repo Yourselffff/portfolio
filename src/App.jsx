@@ -63,6 +63,8 @@ const sections = [
     type: 'projects',
     items: [
       { title: 'MtBeat', tech: 'Java Swing / SQL', desc: 'Application de gestion de repas entre collègues.', longDesc: "Projet de groupe réalisé dans le cadre du cours d'ADP (Analyse et Développement de Projets). L'objectif était de concevoir une application lourde complète en Java pour faciliter l'organisation des repas du midi entre collègues. Gestion des votes, des lieux et des participations." },
+      { title: 'RFTG Mobile', tech: 'Android / Java', desc: 'App mobile de location de films.', longDesc: "Application mobile native développée sous Android Studio. Elle permet aux utilisateurs de consulter un catalogue de films, de voir les détails et de simuler la location de médias. Focus sur l'expérience utilisateur mobile." },
+      { title: 'RFTG Admin', tech: 'Laravel / PHP', desc: 'Back-office de gestion de stock.', longDesc: "Interface web d'administration développée avec Laravel. Elle permet aux gérants de piloter l'application mobile : gestion du stock de films, CRUD des utilisateurs, suivi des locations et statistiques." },
       { title: 'Portail Assurance', tech: 'Laravel / Docker', desc: 'Application web complète pour la gestion de contrats d\'assurance.', longDesc: "Développement en entreprise pour répondre à des besoins clients spécifiques. Le projet inclut la gestion du cycle de vie des contrats d'assurance et la maintenance évolutive de l'application existante sous Docker." },
       { title: 'Outils Internes', tech: 'Angular / API', desc: 'Refonte applications internes en Web App Fullstack.', longDesc: "Développement et modernisation des outils internes de l'entreprise. Utilisation du framework Angular pour créer une interface web reactive (Single Page Application) et optimiser les flux métiers, en remplacement d'anciennes solutions." }
     ]
@@ -91,9 +93,9 @@ const sections = [
     color: '#ffffff',
     type: 'contact',
     links: [
-      { name: 'GitHub', icon: <FaGithub />, url: 'https://github.com' },
-      { name: 'LinkedIn', icon: <FaLinkedin />, url: 'https://linkedin.com' },
-      { name: 'Email', icon: <FaEnvelope />, url: 'mailto:contact@example.com' }
+      { name: 'GitHub', icon: <FaGithub />, url: 'https://github.com/Yourselffff' },
+      { name: 'LinkedIn', icon: <FaLinkedin />, url: 'https://www.linkedin.com/in/l%C3%A9o-clerc-209297304/' },
+      { name: 'Email', icon: <FaEnvelope />, url: 'mailto:clercleopro@gmail.com' }
     ]
   }
 ];
@@ -171,13 +173,15 @@ export default function App() {
 
       {/* Navigation Dots */}
       <div className="nav-dots">
-        {sections.map((_, i) => (
+        {sections.map((section, i) => (
           <div
             key={i}
-            className={`dot ${i === index ? 'active' : ''}`}
+            className={`dot-container ${i === index ? 'active' : ''}`}
             onClick={() => goToSection(i)}
-            title={sections[i].title}
-          />
+          >
+            <span className="dot-label">{section.title}</span>
+            <div className={`dot ${i === index ? 'active' : ''}`} />
+          </div>
         ))}
       </div>
 

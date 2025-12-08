@@ -1,0 +1,60 @@
+/* Navigation Dots Container */
+.nav-dots {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    z-index: 100;
+    align-items: flex-end;
+    /* Align to the right */
+}
+
+.dot-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.dot-label {
+    font-size: 0.9rem;
+    color: white;
+    font-family: var(--font-header);
+    opacity: 0;
+    transform: translateX(10px);
+    transition: all 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px black;
+    pointer-events: none;
+}
+
+.dot-container:hover .dot-label,
+.dot-container.active .dot-label {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transition: all 0.3s;
+    position: relative;
+    /* Needed for any pseudo elements if added later */
+}
+
+.dot-container.active .dot {
+    background: white;
+    transform: scale(1.3);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+}
+
+.dot-container:hover .dot {
+    background: rgba(255, 255, 255, 0.6);
+}
