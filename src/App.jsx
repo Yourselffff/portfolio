@@ -106,26 +106,26 @@ const sections = [
       {
         title: 'Fonctionnement Global',
         tech: 'Réseaux de Neurones',
-        desc: 'Imitation du cerveau humain via des couches de neurones artificiels.',
-        longDesc: "Les réseaux de neurones (ANN) sont composés de couches d'unités de calcul interconnectées. \n\nCouche d'entrée : Reçoit les données brutes.\n• Couches cachées : Effectuent des transformations mathématiques complexes (fonctions d'activation type ReLU, Sigmoid).\n• Couche de sortie : Produit le résultat final (probabilité, classification).\n\nLe 'savoir' du réseau réside dans les poids de chaque connexion, ajustés durant l'entraînement."
+        desc: 'Comprendre comment l\'IA imite le cerveau humain.',
+        longDesc: "Dans le cadre de ma veille technologique, je me suis intéressé au fonctionnement des réseaux de neurones artificiels (ANN). \n\nJ'ai analysé comment les données transitent à travers différentes couches (Entrée, Cachée, Sortie). \nCette approche diffère de la programmation algorithmique classique vue en cours : ici, on ne code pas la règle, on code la structure qui va déduire la règle."
       },
       {
         title: 'Apprentissage',
-        tech: 'Deep Learning',
-        desc: 'Le modèle apprend par l\'expérience et la rétropropagation.',
-        longDesc: "Le processus d'apprentissage repose sur la minimisation d'une fonction d'erreur (Loss Function)\n\nForward Propagation : La donnée traverse le réseau pour produire une prédiction\n Calcul de l'erreur : Comparaison avec la vérité terrain.\n Backpropagation : L'algorithme de descente de gradient (Gradient Descent) remonte le réseau pour ajuster les poids synaptiques et réduire l'erreur future."
+        tech: 'Machine Learning',
+        desc: 'Comment un algorithme s\'améliore par l\'expérience.',
+        longDesc: "J'ai étudié le concept de 'l'apprentissage supervisé'. Contrairement à nos projets de développement habituels où le comportement est statique, ici le programme évolue.\n\nJ'ai retenu le principe de la 'Backpropagation' : l'algorithme compare sa réponse à la réalité, calcule son erreur, et s'auto-corrige pour les prochaines fois. C'est fascinant de voir mathématiquement comment une machine 'apprend' de ses erreurs."
       },
       {
-        title: 'Workflow de Création',
-        tech: 'Data Science',
-        desc: 'De la donnée brute au modèle déployé.',
-        longDesc: "Le cycle de vie d'une IA est rigoureux :\n\n Data Engineering : Collecte, nettoyage et normalisation des datasets (ETL)\nArchitecture : Sélection du modèle (CNN pour l'image, Transformers pour le NLP, RNN pour les séquences).\n Training : Entraînement sur GPU/TPU avec ajustement des hyperparamètres.\n Validation : Test sur des données jamais vues pour éviter le surapprentissage (Overfitting)."
+        title: 'Workflow de Développement',
+        tech: 'Data & Modèles',
+        desc: 'Les étapes clés pour concevoir une IA.',
+        longDesc: "Pour mes futurs projets, j'ai identifié les étapes standards de création d'une IA :\n\nLa préparation des données (Data Cleaning) est cruciale et rejoint nos compétences en gestion de données (SQL).\nEnsuite vient le choix du modèle selon le problème (Image, Texte, Chiffres) et enfin l'entraînement.\nLa rigueur nécessaire dans la gestion des datasets me rappelle l'importance de l'intégrité des données dans nos bases relationnelles."
       },
       {
-        title: 'Technologies Phares',
-        tech: 'Stack Python',
-        desc: 'L\'écosystème open-source dominant.',
-        longDesc: "Python est le langage incontournable grâce à ses bibliothèques puissantes :\n\n TensorFlow / Keras (Google) : Pour la production et le déploiement mobile/JS.\nPyTorch (Meta) : Prisé par la recherche pour sa flexibilité.\n Scikit-learn : Pour les algorithmes de Machine Learning classiques (Régression, Clustering).\n Pandas & NumPy : Pour la manipulation haute performance de données structurées."
+        title: 'Outils & Langages',
+        tech: 'Écosystème Python',
+        desc: 'Les technologies standards de l\'industrie.',
+        longDesc: "J'ai pu constater que Python est le langage standard dans ce domaine, ce qui motive mon auto-formation sur ce langage en parallèle du BTS.\n\nLes bibliothèques comme TensorFlow ou Scikit-learn abstraient la complexité mathématique, permettant aux développeurs de se concentrer sur l'architecture logique. Cela ouvre des perspectives pour intégrer de l'IA dans des applications web ou mobiles classiques."
       }
     ]
   },
