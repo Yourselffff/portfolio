@@ -10,7 +10,7 @@ const sections = [
     title: 'Clerc Léo',
     subtitle: '22 ans | Étudiant BTS SIO',
     description: "Passionné par le potentiel des nouvelles technologies. Bienvenue dans mon système solaire.",
-    planet: '/assets/real_earth.png',
+    planet: 'assets/real_earth.png',
     color: '#4db5ff',
     type: 'intro'
   },
@@ -19,7 +19,7 @@ const sections = [
     title: 'Origine',
     subtitle: 'La Base',
     description: "Tout a commencé avec une passion pour les mathématiques et l'informatique. Aujourd'hui, je suis en route pour maîtriser l'intelligence artificielle.",
-    planet: '/assets/real_mars.png',
+    planet: 'assets/real_mars.png',
     color: '#ff6b6b',
     type: 'info'
   },
@@ -28,7 +28,7 @@ const sections = [
     title: 'Trajectoire',
     subtitle: 'Expérience',
     description: "Mon parcours académique et professionnel, une ascension constante.",
-    planet: '/assets/real_jupiter.png',
+    planet: 'assets/real_jupiter.png',
     color: '#ff8c00',
     type: 'timeline',
     items: [
@@ -43,7 +43,7 @@ const sections = [
     title: 'Arsenal',
     subtitle: 'Compétences',
     description: "Technologies acquises en milieu scolaire et professionnel.",
-    planet: '/assets/real_saturn.png',
+    planet: 'assets/real_saturn.png',
     color: '#ffd700',
     type: 'skills',
     categories: [
@@ -58,7 +58,7 @@ const sections = [
     title: 'Missions',
     subtitle: 'Projets Réalisés',
     description: "Déploiement réussi de solutions concrètes.",
-    planet: '/assets/real_neptune.png',
+    planet: 'assets/real_neptune.png',
     color: '#00bfff',
     type: 'projects',
     items: [
@@ -72,7 +72,7 @@ const sections = [
     title: 'Veille Techno',
     subtitle: 'L\'Intelligence Artificielle',
     description: "Comprendre le fonctionnement, l'apprentissage et la création des modèles d'IA modernes.",
-    planet: '/assets/real_uranus.png',
+    planet: 'assets/real_uranus.png',
     color: '#00ffff', // Cyan
     type: 'projects', // Reusing project card layout for detailed info
     items: [
@@ -87,7 +87,7 @@ const sections = [
     title: 'Contact',
     subtitle: 'Transmission',
     description: "Prêt à rejoindre votre équipage. Envoyez un signal.",
-    planet: '/assets/real_earth.png',
+    planet: 'assets/real_earth.png',
     color: '#ffffff',
     type: 'contact',
     links: [
