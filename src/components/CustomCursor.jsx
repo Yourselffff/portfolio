@@ -22,14 +22,21 @@ export default function CustomCursor() {
 
     return (
         <motion.div
-            className="custom-cursor"
             style={{
                 translateX: cursorXSpring,
                 translateY: cursorYSpring,
+                position: 'fixed',
+                left: 0,
+                top: 0,
+                zIndex: 99999,
+                pointerEvents: 'none',
             }}
         >
-            <div className="w-8 h-8 rounded-full border-2 border-cyan-400 bg-white/20 backdrop-blur-sm" />
-            <div className="absolute top-1/2 left-1/2 w-1 h-1 bg-cyan-400 rounded-full -translate-x-1/2 -translate-y-1/2" />
+            {/* Main Cursor Dot */}
+            <div className="w-4 h-4 rounded-full bg-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.8)]" />
+
+            {/* Trailing Ring */}
+            <div className="absolute top-1/2 left-1/2 w-8 h-8 rounded-full border border-cyan-400/50 -translate-x-1/2 -translate-y-1/2" />
         </motion.div>
     );
 }
