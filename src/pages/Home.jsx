@@ -9,11 +9,9 @@ export default function Home() {
     const contact = sections.find(s => s.id === 'contact') || {};
 
     // 1. Mouse Parallax Logic
-    // We track mouse position relative to the window center
     const x = useMotionValue(0);
     const y = useMotionValue(0);
 
-    // Create a smooth spring animation for the tracking
     const mouseXSpring = useSpring(x, { stiffness: 50, damping: 20 });
     const mouseYSpring = useSpring(y, { stiffness: 50, damping: 20 });
 
@@ -22,15 +20,14 @@ export default function Home() {
         const centerX = window.innerWidth / 2;
         const centerY = window.innerHeight / 2;
 
-        // Calculate distance from center (Example: -500 to 500)
         x.set(clientX - centerX);
         y.set(clientY - centerY);
     };
 
     // Parallax Transforms
-    const planetX = useTransform(mouseXSpring, [-500, 500], [20, -20]); // Moves opposite to mouse (Depth effect)
+    const planetX = useTransform(mouseXSpring, [-500, 500], [20, -20]);
     const planetY = useTransform(mouseYSpring, [-500, 500], [20, -20]);
-    const textX = useTransform(mouseXSpring, [-500, 500], [-10, 10]); // Moves with mouse slightly
+    const textX = useTransform(mouseXSpring, [-500, 500], [-10, 10]);
 
     // 2. Scroll Logic
     const containerRef = useRef(null);
@@ -48,7 +45,7 @@ export default function Home() {
     return (
         <div ref={containerRef} className="min-h-screen relative" onMouseMove={handleMouseMove}>
 
-            {/* Hero Section (Intro) - NOW REACTIVE TO MOUSE */}
+            {/* Hero Section (Intro) */}
             <section id="intro" className="min-h-screen flex items-center justify-center relative overflow-hidden perspective-1000">
                 <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between z-10">
                     <motion.div
@@ -99,7 +96,7 @@ export default function Home() {
                 </section>
             )}
 
-            {/* Experience Section (Horizontal Scroll "Apple Style") */}
+            {/* Experience Section (Vertical Warp Beam) */}
             {timeline.id && (
                 <TimelineSection timeline={timeline} />
             )}
@@ -144,53 +141,95 @@ const TimelineSection = ({ timeline }) => {
     const targetRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: targetRef,
-        offset: ["start start", "end end"]
+        offset: ["start end", "end start"]
     });
 
-    const x = useTransform(scrollYProgress, [0, 1], ["10%", "-85%"]);
+    const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
     return (
-        <section ref={targetRef} id="timeline" className="relative h-[400vh] bg-[#050505] z-20">
-            <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+        <section ref={targetRef} id="timeline" className="relative py-32 bg-[#050505]">
 
-                {/* Header */}
-                <div className="container mx-auto px-6 mb-8 relative z-20">
-                    <h2 className="text-orange-400 font-bold mb-2 uppercase tracking-widest">{timeline.subtitle}</h2>
-                    <h2 className="text-4xl md:text-6xl font-bold text-white font-header">{timeline.title}</h2>
-                    <p className="text-white/50 mt-2 text-sm md:text-base">Scrollez pour voyager dans le temps →</p>
+            {/* Header */}
+            <div className="container mx-auto px-6 mb-24 text-center relative z-20">
+                <h2 className="text-orange-400 font-bold mb-4 uppercase tracking-[0.2em]">{timeline.subtitle}</h2>
+                <h2 className="text-5xl md:text-7xl font-bold text-white font-header drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">{timeline.title}</h2>
+                <p className="text-white/60 mt-6 max-w-2xl mx-auto text-lg leading-relaxed">Une ascension constante à travers les technologies et les défis.</p>
+            </div>
+
+            <div className="container mx-auto px-6 relative">
+
+                {/* Central Beam Container */}
+                <div className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-1 md:-translate-x-1/2 bg-white/10 rounded-full h-full overflow-hidden">
+                    {/* Filling Beam */}
+                    <motion.div
+                        style={{ scaleY, originY: 0 }}
+                        className="w-full h-full bg-gradient-to-b from-orange-400 via-orange-500 to-red-600 shadow-[0_0_20px_#f97316]"
+                    />
                 </div>
 
-                {/* Cards Container */}
-                <motion.div style={{ x }} className="flex gap-8 px-8 md:px-24 items-center w-max">
+                {/* Items */}
+                <div className="space-y-24 md:space-y-32">
                     {timeline.items && timeline.items.map((item, idx) => (
-                        <div key={idx} className="relative w-[85vw] md:w-[600px] h-[50vh] md:h-[500px] flex-shrink-0 perspective-1000">
-                            <div className="w-full h-full bg-[#111] border border-white/10 rounded-3xl p-6 md:p-10 flex flex-col justify-between shadow-2xl relative overflow-hidden group hover:border-orange-500/50 transition-colors duration-500">
-
-                                {/* Glow Effect */}
-                                <div className="absolute inset-0 bg-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-
-                                <div className="relative z-10">
-                                    <div className="inline-block bg-orange-500 text-black font-bold px-4 py-2 rounded-full text-lg mb-6 shadow-lg shadow-orange-500/20">
-                                        {item.year}
-                                    </div>
-                                    <h3 className="text-2xl md:text-4xl font-bold text-white mb-4 leading-tight">{item.role}</h3>
-                                    <div className="h-1 w-20 bg-gradient-to-r from-orange-500 to-transparent mb-4" />
-                                    <p className="text-normal md:text-xl text-gray-400 leading-relaxed">
-                                        {item.desc}
-                                    </p>
-                                </div>
-
-                                <div className="text-right opacity-30 font-mono text-sm">
-                                    STEP {idx + 1}
-                                </div>
-                            </div>
-                        </div>
+                        <TimelineItem key={idx} item={item} idx={idx} />
                     ))}
-                </motion.div>
-
-                {/* Background Decor */}
-                <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-orange-500/30 to-transparent -z-10" />
+                </div>
             </div>
         </section>
     );
 };
+
+const TimelineItem = ({ item, idx }) => {
+    const ref = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ["start end", "center center"]
+    });
+
+    const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
+    const x = useTransform(scrollYProgress, [0.2, 0.5], [idx % 2 === 0 ? -50 : 50, 0]);
+
+    // On mobile, everything is left aligned to the beam (beam is at left: 20px)
+    // On desktop, beam is center, so we alternate left/right.
+    const isEven = idx % 2 === 0;
+
+    return (
+        <motion.div
+            ref={ref}
+            style={{ opacity, x }}
+            className={`relative flex flex-col md:flex-row items-center md:justify-between ${isEven ? 'md:flex-row-reverse' : ''}`}
+        >
+            {/* Spacer for Desktop Alignment */}
+            <div className="hidden md:block flex-1" />
+
+            {/* Central Node on the Beam */}
+            <div className="absolute left-[20px] md:left-1/2 w-4 h-4 bg-black border-2 border-orange-500 rounded-full md:-translate-x-1/2 z-10 shadow-[0_0_15px_orange] mt-8 md:mt-0" />
+
+            {/* Content Card */}
+            <div className="flex-1 w-full pl-16 md:pl-16 md:pr-0">
+                <motion.div
+                    whileHover={{ scale: 1.02, backgroundColor: "rgba(255,140,0,0.05)" }}
+                    className={`relative p-8 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md transition-all duration-300 group hover:border-orange-500/30 hover:shadow-[0_0_30px_rgba(249,115,22,0.1)]`}
+                >
+                    {/* Glowing Corner */}
+                    <div className="absolute -top-1 -right-1 w-20 h-20 bg-gradient-to-br from-orange-500/20 to-transparent rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                    <div className="flex flex-col gap-4 relative z-10">
+                        <span className="inline-block bg-orange-500/10 text-orange-400 font-bold px-4 py-1 rounded-full text-sm w-fit border border-orange-500/20 shadow-[0_0_10px_rgba(249,115,22,0.2)]">
+                            {item.year}
+                        </span>
+
+                        <h3 className="text-3xl font-bold text-white leading-tight">
+                            {item.role}
+                        </h3>
+
+                        <div className="h-0.5 w-12 bg-gradient-to-r from-orange-500 to-transparent" />
+
+                        <p className="text-gray-400 text-lg leading-relaxed">
+                            {item.desc}
+                        </p>
+                    </div>
+                </motion.div>
+            </div>
+        </motion.div>
+    );
+}
