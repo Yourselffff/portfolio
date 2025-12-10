@@ -96,7 +96,7 @@ export default function Home() {
                 </section>
             )}
 
-            {/* Experience Section (Persistent Vertical Laser-Line Timeline) */}
+            {/* Experience Section (Robust Left-Aligned Timeline) */}
             {timeline.id && (
                 <TimelineSection timeline={timeline} />
             )}
@@ -144,42 +144,42 @@ const TimelineSection = ({ timeline }) => {
         offset: ["start end", "end start"]
     });
 
-    // Animate the line filling up as we scroll
     const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
     return (
-        <section ref={ref} id="timeline" className="relative py-32 bg-black overflow-hidden">
+        <section ref={ref} id="timeline" className="relative py-24 md:py-48 bg-black overflow-hidden">
 
             {/* Background Ambience */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_#1a1a1a_0%,_#000000_100%)] pointer-events-none" />
-            <div className="absolute top-0 left-[21px] md:left-1/2 md:-translate-x-1/2 w-[1px] h-full bg-orange-500/10" /> {/* Guiding line trace */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_#1a1a1a_0%,_#000000_80%)] pointer-events-none" />
 
             <div className="container mx-auto px-6 relative z-10">
 
                 {/* Header */}
-                <div className="text-center mb-24">
+                <div className="text-center mb-24 max-w-4xl mx-auto">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
                     >
                         <h2 className="text-orange-500 font-bold mb-4 uppercase tracking-[0.3em] text-lg">{timeline.subtitle}</h2>
-                        <h2 className="text-5xl md:text-7xl font-black text-white">{timeline.title}</h2>
-                        <p className="text-gray-400 mt-6 max-w-2xl mx-auto text-lg">
+                        <h2 className="text-5xl md:text-7xl font-black text-white mb-8">{timeline.title}</h2>
+                        <p className="text-gray-400 text-lg md:text-xl leading-relaxed">
                             {timeline.description}
                         </p>
                     </motion.div>
                 </div>
 
-                <div className="relative">
-                    {/* The Laser Line */}
+                <div className="relative max-w-6xl mx-auto">
+                    {/* The Laser Line (Left aligned relative to content) */}
+                    <div className="absolute left-[8px] md:left-[0px] top-4 bottom-0 w-[0.5px] bg-white/10" />
                     <motion.div
                         style={{ scaleY, originY: 0 }}
-                        className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400 via-orange-500 to-red-600 shadow-[0_0_15px_#f97316] md:-translate-x-1/2 rounded-full"
+                        className="absolute left-[8px] md:left-[0px] top-4 bottom-0 w-[2px] bg-gradient-to-b from-orange-400 via-red-500 to-purple-600 shadow-[0_0_15px_#f97316]"
                     />
 
                     {/* Timeline Items */}
-                    <div className="space-y-24">
+                    <div className="flex flex-col gap-16 md:gap-24 pl-12 md:pl-16">
                         {timeline.items && timeline.items.map((item, idx) => (
                             <TimelineItem
                                 key={idx}
@@ -196,46 +196,33 @@ const TimelineSection = ({ timeline }) => {
 };
 
 const TimelineItem = ({ item, index }) => {
-    const isEven = index % 2 === 0;
-
     return (
         <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6, delay: index * 0.1 }}
-            className={`relative flex flex-col md:flex-row items-start ${isEven ? 'md:flex-row-reverse' : ''}`}
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="relative"
         >
-            {/* Spacer for layout balance on Desktop */}
-            <div className="hidden md:block flex-1" />
+            {/* Node on the line */}
+            <div className="absolute -left-[49px] md:-left-[73px] top-0 w-5 h-5 bg-black border-[2px] border-orange-500 rounded-full z-20 shadow-[0_0_15px_#f97316] mt-1.5" />
 
-            {/* Central Dot */}
-            <div className="absolute left-[13px] md:left-1/2 w-4 h-4 bg-black border-[3px] border-orange-500 rounded-full md:-translate-x-1/2 z-20 shadow-[0_0_10px_#f97316] mt-8 md:mt-8 shrink-0" />
-
-            {/* Card */}
-            <div className="flex-1 w-full pl-16 md:pl-0 md:px-16 pt-2">
-                <motion.div
-                    whileHover={{ y: -5, backgroundColor: "rgba(255,100,0,0.05)" }}
-                    className="group relative bg-[#0a0a0a] border border-white/10 p-8 rounded-2xl md:rounded-3xl hover:border-orange-500/50 transition-all duration-300 shadow-xl"
-                >
-                    {/* Year Badge */}
-                    <div className="absolute -top-4 right-8 bg-orange-600 text-white font-bold px-4 py-1 rounded-full text-sm shadow-lg shadow-orange-900/40">
-                        {item.year}
-                    </div>
-
-                    <h3 className="text-2xl md:text-4xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">
+            <div className="group relative bg-[#0a0a0a] border border-white/10 p-8 md:p-10 rounded-2xl hover:border-orange-500/30 transition-all duration-300 shadow-2xl">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-orange-400 transition-colors">
                         {item.role}
                     </h3>
+                    <div className="inline-block bg-orange-900/20 border border-orange-500/20 text-orange-400 font-bold px-4 py-2 rounded-full text-sm">
+                        {item.year}
+                    </div>
+                </div>
 
-                    <div className="h-0.5 w-12 bg-orange-500/30 mb-4 group-hover:w-24 group-hover:bg-orange-500 transition-all duration-500" />
+                <p className="text-gray-400 text-lg leading-relaxed border-l-2 border-orange-500/20 pl-6">
+                    {item.desc}
+                </p>
 
-                    <p className="text-gray-400 text-lg leading-relaxed">
-                        {item.desc}
-                    </p>
-
-                    {/* Decorative glow on hover */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl md:rounded-3xl pointer-events-none" />
-                </motion.div>
+                {/* Decorative Hover Glow */}
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none" />
             </div>
         </motion.div>
     );
