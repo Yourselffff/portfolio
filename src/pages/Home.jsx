@@ -96,7 +96,7 @@ export default function Home() {
                 </section>
             )}
 
-            {/* Experience Section (Tunnel/Stargate Effect) */}
+            {/* Experience Section (Tunnel/Stargate Effect - REFINED) */}
             {timeline.id && (
                 <TimelineSection timeline={timeline} />
             )}
@@ -151,19 +151,20 @@ const TimelineSection = ({ timeline }) => {
                 {/* Background Tunnel Effect */}
                 <TunnelBackground scrollYProgress={scrollYProgress} />
 
-                {/* Title */}
+                {/* Title - Fades out quickly */}
                 <motion.div
                     style={{
-                        opacity: useTransform(scrollYProgress, [0, 0.15], [1, 0]),
-                        scale: useTransform(scrollYProgress, [0, 0.15], [1, 2])
+                        opacity: useTransform(scrollYProgress, [0, 0.1], [1, 0]),
+                        scale: useTransform(scrollYProgress, [0, 0.1], [1, 1.5]),
+                        y: useTransform(scrollYProgress, [0, 0.1], [0, -100])
                     }}
                     className="absolute z-50 text-center pointer-events-none"
                 >
                     <h2 className="text-orange-500 font-bold mb-4 uppercase tracking-[0.5em] text-xl">{timeline.subtitle}</h2>
-                    <h2 className="text-6xl md:text-8xl font-black text-white drop-shadow-2xl">{timeline.title}</h2>
+                    <h2 className="text-6xl md:text-8xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">{timeline.title}</h2>
                 </motion.div>
 
-                {/* Cards zooming in */}
+                {/* Cards zooming in One by One */}
                 {timeline.items && timeline.items.map((item, idx) => (
                     <TunnelItem
                         key={idx}
@@ -179,47 +180,52 @@ const TimelineSection = ({ timeline }) => {
 };
 
 const TunnelItem = ({ item, index, total, scrollYProgress }) => {
-    // Calculate trigger points
-    const stepSize = 0.8 / total;
-    const start = 0.1 + (index * stepSize);
-    const end = start + stepSize + 0.1;
+    // Smoother non-overlapping ranges
+    // We have 4 items usually. Range 0.1 to 0.9.
+    const step = 0.8 / total;
+    const start = 0.1 + (index * step);
+    const end = start + step;
 
-    // Scale from 0 (background) to 1 (foreground) then 3 (past)
-    const scale = useTransform(scrollYProgress, [start, end], [0.2, 2]);
-    const opacity = useTransform(scrollYProgress, [start, start + 0.1, end - 0.1, end], [0, 1, 1, 0]);
-    const y = useTransform(scrollYProgress, [start, end], ["30%", "-10%"]); // Slight Upward motion to simulate "passing under" or "into"
+    // Animation: Start small/transparent -> Grow/Visible -> Fly past/Fade
+    const scale = useTransform(scrollYProgress, [start, (start + end) / 2, end], [0.5, 1, 1.5]);
+    const opacity = useTransform(scrollYProgress, [start, start + 0.05, end - 0.05, end], [0, 1, 1, 0]);
+    const y = useTransform(scrollYProgress, [start, end], ["100px", "-100px"]); // Moves up slightly as it comes forward
+    const blur = useTransform(scrollYProgress, [start, (start + end) / 2, end], ["blur(10px)", "blur(0px)", "blur(10px)"]);
 
     return (
         <motion.div
-            style={{ scale, opacity, y }}
-            className="absolute p-8 md:p-12 w-[90vw] md:w-[800px] border border-orange-500/20 bg-black/80 backdrop-blur-md rounded-3xl flex flex-col items-center text-center shadow-[0_0_50px_rgba(249,115,22,0.1)] origin-center z-40"
+            style={{ scale, opacity, y, filter: blur }}
+            className="absolute p-8 md:p-12 w-[85vw] md:w-[700px] border border-orange-500/30 bg-[#111] rounded-3xl flex flex-col items-center text-center shadow-[0_0_60px_rgba(249,115,22,0.2)] z-40"
         >
-            <div className="bg-orange-500 text-black font-bold px-6 py-2 rounded-full mb-6">
+            <div className="bg-orange-600 text-white font-bold px-6 py-2 rounded-full mb-6 shadow-lg">
                 {item.year}
             </div>
-            <h3 className="text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-lg">{item.role}</h3>
-            <p className="text-xl md:text-2xl text-gray-300 leading-relaxed">{item.desc}</p>
+            <h3 className="text-3xl md:text-5xl font-bold text-white mb-6 drop-shadow-md leading-tight">{item.role}</h3>
+            <p className="text-lg md:text-2xl text-gray-300 leading-relaxed font-light">{item.desc}</p>
         </motion.div>
     );
 };
 
 const TunnelBackground = ({ scrollYProgress }) => {
-    // Simple radial gradient pulsing
-    const scale = useTransform(scrollYProgress, [0, 1], [0.5, 4]);
-    const rotate = useTransform(scrollYProgress, [0, 1], [0, 90]);
+    // Rotating Tunnel
+    const rotate = useTransform(scrollYProgress, [0, 1], [0, 120]);
+    const scale = useTransform(scrollYProgress, [0, 1], [1, 1.5]);
 
     return (
-        <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none bg-black">
             <motion.div
-                style={{ scale, rotate }}
-                className="absolute inset-[-50%] w-[200%] h-[200%] flex items-center justify-center opacity-30"
+                style={{ rotate, scale }}
+                className="absolute inset-[-50%] w-[200%] h-[200%] flex items-center justify-center opacity-20"
             >
-                <div className="absolute w-[80vw] h-[80vw] border-[1px] border-orange-900/30 rounded-full scale-[2]" />
-                <div className="absolute w-[60vw] h-[60vw] border-[2px] border-orange-800/30 rounded-full scale-[1.5]" />
-                <div className="absolute w-[40vw] h-[40vw] border-[3px] border-orange-600/30 rounded-full" />
-                <div className="absolute w-[20vw] h-[20vw] border-[4px] border-orange-500/20 rounded-full scale-[0.5]" />
+                {/* Concentric Circles simulating a tunnel */}
+                <div className="absolute w-[90vw] h-[90vw] border-[1px] border-orange-500/20 rounded-full" />
+                <div className="absolute w-[70vw] h-[70vw] border-[2px] border-orange-500/20 rounded-full" />
+                <div className="absolute w-[50vw] h-[50vw] border-[4px] border-orange-600/20 rounded-full" />
+                <div className="absolute w-[30vw] h-[30vw] border-[8px] border-orange-700/20 rounded-full" />
             </motion.div>
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#000000_80%)]" />
+
+            {/* Vignette */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#000000_100%)]" />
         </div>
     );
 };
