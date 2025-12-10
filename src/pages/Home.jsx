@@ -96,7 +96,7 @@ export default function Home() {
                 </section>
             )}
 
-            {/* Experience Section (Tunnel/Stargate Effect - REFINED) */}
+            {/* Experience Section (Persistent Vertical Laser-Line Timeline) */}
             {timeline.id && (
                 <TimelineSection timeline={timeline} />
             )}
@@ -138,94 +138,105 @@ export default function Home() {
 }
 
 const TimelineSection = ({ timeline }) => {
-    const targetRef = useRef(null);
+    const ref = useRef(null);
     const { scrollYProgress } = useScroll({
-        target: targetRef,
-        offset: ["start start", "end end"]
+        target: ref,
+        offset: ["start end", "end start"]
     });
 
+    // Animate the line filling up as we scroll
+    const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
     return (
-        <section ref={targetRef} id="timeline" className="relative h-[400vh] bg-black z-40">
-            <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+        <section ref={ref} id="timeline" className="relative py-32 bg-black overflow-hidden">
 
-                {/* Background Tunnel Effect */}
-                <TunnelBackground scrollYProgress={scrollYProgress} />
+            {/* Background Ambience */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_#1a1a1a_0%,_#000000_100%)] pointer-events-none" />
+            <div className="absolute top-0 left-[21px] md:left-1/2 md:-translate-x-1/2 w-[1px] h-full bg-orange-500/10" /> {/* Guiding line trace */}
 
-                {/* Title - Fades out quickly */}
-                <motion.div
-                    style={{
-                        opacity: useTransform(scrollYProgress, [0, 0.1], [1, 0]),
-                        scale: useTransform(scrollYProgress, [0, 0.1], [1, 1.5]),
-                        y: useTransform(scrollYProgress, [0, 0.1], [0, -100])
-                    }}
-                    className="absolute z-50 text-center pointer-events-none"
-                >
-                    <h2 className="text-orange-500 font-bold mb-4 uppercase tracking-[0.5em] text-xl">{timeline.subtitle}</h2>
-                    <h2 className="text-6xl md:text-8xl font-black text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">{timeline.title}</h2>
-                </motion.div>
+            <div className="container mx-auto px-6 relative z-10">
 
-                {/* Cards zooming in One by One */}
-                {timeline.items && timeline.items.map((item, idx) => (
-                    <TunnelItem
-                        key={idx}
-                        item={item}
-                        index={idx}
-                        total={timeline.items.length}
-                        scrollYProgress={scrollYProgress}
+                {/* Header */}
+                <div className="text-center mb-24">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                    >
+                        <h2 className="text-orange-500 font-bold mb-4 uppercase tracking-[0.3em] text-lg">{timeline.subtitle}</h2>
+                        <h2 className="text-5xl md:text-7xl font-black text-white">{timeline.title}</h2>
+                        <p className="text-gray-400 mt-6 max-w-2xl mx-auto text-lg">
+                            {timeline.description}
+                        </p>
+                    </motion.div>
+                </div>
+
+                <div className="relative">
+                    {/* The Laser Line */}
+                    <motion.div
+                        style={{ scaleY, originY: 0 }}
+                        className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400 via-orange-500 to-red-600 shadow-[0_0_15px_#f97316] md:-translate-x-1/2 rounded-full"
                     />
-                ))}
+
+                    {/* Timeline Items */}
+                    <div className="space-y-24">
+                        {timeline.items && timeline.items.map((item, idx) => (
+                            <TimelineItem
+                                key={idx}
+                                item={item}
+                                index={idx}
+                            />
+                        ))}
+                    </div>
+                </div>
+
             </div>
         </section>
     );
 };
 
-const TunnelItem = ({ item, index, total, scrollYProgress }) => {
-    // Smoother non-overlapping ranges
-    // We have 4 items usually. Range 0.1 to 0.9.
-    const step = 0.8 / total;
-    const start = 0.1 + (index * step);
-    const end = start + step;
-
-    // Animation: Start small/transparent -> Grow/Visible -> Fly past/Fade
-    const scale = useTransform(scrollYProgress, [start, (start + end) / 2, end], [0.5, 1, 1.5]);
-    const opacity = useTransform(scrollYProgress, [start, start + 0.05, end - 0.05, end], [0, 1, 1, 0]);
-    const y = useTransform(scrollYProgress, [start, end], ["100px", "-100px"]); // Moves up slightly as it comes forward
-    const blur = useTransform(scrollYProgress, [start, (start + end) / 2, end], ["blur(10px)", "blur(0px)", "blur(10px)"]);
+const TimelineItem = ({ item, index }) => {
+    const isEven = index % 2 === 0;
 
     return (
         <motion.div
-            style={{ scale, opacity, y, filter: blur }}
-            className="absolute p-8 md:p-12 w-[85vw] md:w-[700px] border border-orange-500/30 bg-[#111] rounded-3xl flex flex-col items-center text-center shadow-[0_0_60px_rgba(249,115,22,0.2)] z-40"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.6, delay: index * 0.1 }}
+            className={`relative flex flex-col md:flex-row items-start ${isEven ? 'md:flex-row-reverse' : ''}`}
         >
-            <div className="bg-orange-600 text-white font-bold px-6 py-2 rounded-full mb-6 shadow-lg">
-                {item.year}
+            {/* Spacer for layout balance on Desktop */}
+            <div className="hidden md:block flex-1" />
+
+            {/* Central Dot */}
+            <div className="absolute left-[13px] md:left-1/2 w-4 h-4 bg-black border-[3px] border-orange-500 rounded-full md:-translate-x-1/2 z-20 shadow-[0_0_10px_#f97316] mt-8 md:mt-8 shrink-0" />
+
+            {/* Card */}
+            <div className="flex-1 w-full pl-16 md:pl-0 md:px-16 pt-2">
+                <motion.div
+                    whileHover={{ y: -5, backgroundColor: "rgba(255,100,0,0.05)" }}
+                    className="group relative bg-[#0a0a0a] border border-white/10 p-8 rounded-2xl md:rounded-3xl hover:border-orange-500/50 transition-all duration-300 shadow-xl"
+                >
+                    {/* Year Badge */}
+                    <div className="absolute -top-4 right-8 bg-orange-600 text-white font-bold px-4 py-1 rounded-full text-sm shadow-lg shadow-orange-900/40">
+                        {item.year}
+                    </div>
+
+                    <h3 className="text-2xl md:text-4xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">
+                        {item.role}
+                    </h3>
+
+                    <div className="h-0.5 w-12 bg-orange-500/30 mb-4 group-hover:w-24 group-hover:bg-orange-500 transition-all duration-500" />
+
+                    <p className="text-gray-400 text-lg leading-relaxed">
+                        {item.desc}
+                    </p>
+
+                    {/* Decorative glow on hover */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl md:rounded-3xl pointer-events-none" />
+                </motion.div>
             </div>
-            <h3 className="text-3xl md:text-5xl font-bold text-white mb-6 drop-shadow-md leading-tight">{item.role}</h3>
-            <p className="text-lg md:text-2xl text-gray-300 leading-relaxed font-light">{item.desc}</p>
         </motion.div>
-    );
-};
-
-const TunnelBackground = ({ scrollYProgress }) => {
-    // Rotating Tunnel
-    const rotate = useTransform(scrollYProgress, [0, 1], [0, 120]);
-    const scale = useTransform(scrollYProgress, [0, 1], [1, 1.5]);
-
-    return (
-        <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none bg-black">
-            <motion.div
-                style={{ rotate, scale }}
-                className="absolute inset-[-50%] w-[200%] h-[200%] flex items-center justify-center opacity-20"
-            >
-                {/* Concentric Circles simulating a tunnel */}
-                <div className="absolute w-[90vw] h-[90vw] border-[1px] border-orange-500/20 rounded-full" />
-                <div className="absolute w-[70vw] h-[70vw] border-[2px] border-orange-500/20 rounded-full" />
-                <div className="absolute w-[50vw] h-[50vw] border-[4px] border-orange-600/20 rounded-full" />
-                <div className="absolute w-[30vw] h-[30vw] border-[8px] border-orange-700/20 rounded-full" />
-            </motion.div>
-
-            {/* Vignette */}
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#000000_100%)]" />
-        </div>
     );
 };
