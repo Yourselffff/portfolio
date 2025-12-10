@@ -96,7 +96,7 @@ export default function Home() {
                 </section>
             )}
 
-            {/* Experience Section (Vertical Warp Beam) */}
+            {/* Experience Section (3D Space Warp Timeline) */}
             {timeline.id && (
                 <TimelineSection timeline={timeline} />
             )}
@@ -141,95 +141,100 @@ const TimelineSection = ({ timeline }) => {
     const targetRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: targetRef,
-        offset: ["start end", "end start"]
+        offset: ["start start", "end end"]
     });
 
-    const scaleY = useTransform(scrollYProgress, [0, 1], [0, 1]);
-
     return (
-        <section ref={targetRef} id="timeline" className="relative py-32 bg-[#050505]">
+        <section ref={targetRef} id="timeline" className="relative h-[500vh] bg-[#050505]">
+            <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden perspective-1000">
 
-            {/* Header */}
-            <div className="container mx-auto px-6 mb-24 text-center relative z-20">
-                <h2 className="text-orange-400 font-bold mb-4 uppercase tracking-[0.2em]">{timeline.subtitle}</h2>
-                <h2 className="text-5xl md:text-7xl font-bold text-white font-header drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">{timeline.title}</h2>
-                <p className="text-white/60 mt-6 max-w-2xl mx-auto text-lg leading-relaxed">Une ascension constante à travers les technologies et les défis.</p>
-            </div>
+                {/* Space Warp Lines / Stars Background */}
+                <WarpBackground scrollYProgress={scrollYProgress} />
 
-            <div className="container mx-auto px-6 relative">
+                {/* Main Title appearing first */}
+                <motion.div
+                    style={{
+                        z: useTransform(scrollYProgress, [0, 0.2], [0, 1000]),
+                        opacity: useTransform(scrollYProgress, [0, 0.15], [1, 0]),
+                        scale: useTransform(scrollYProgress, [0, 0.2], [1, 3])
+                    }}
+                    className="absolute z-50 text-center pointer-events-none"
+                >
+                    <h2 className="text-orange-500 font-bold mb-4 uppercase tracking-[0.5em] text-xl md:text-2xl">{timeline.subtitle}</h2>
+                    <h2 className="text-6xl md:text-9xl font-black text-white font-header drop-shadow-[0_0_50px_rgba(255,255,255,0.5)]">{timeline.title}</h2>
+                    <p className="text-white/60 mt-8 text-xl">Accrochez-vous, passage en hyper-espace.</p>
+                </motion.div>
 
-                {/* Central Beam Container */}
-                <div className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-1 md:-translate-x-1/2 bg-white/10 rounded-full h-full overflow-hidden">
-                    {/* Filling Beam */}
-                    <motion.div
-                        style={{ scaleY, originY: 0 }}
-                        className="w-full h-full bg-gradient-to-b from-orange-400 via-orange-500 to-red-600 shadow-[0_0_20px_#f97316]"
-                    />
-                </div>
+                {/* 3D Timeline Items */}
+                {timeline.items && timeline.items.map((item, idx) => {
+                    // Calculate scroll ranges for each item
+                    // Spread them out over the 0.2 to 1.0 range
+                    const startRange = 0.15 + (idx * 0.15);
+                    const endRange = startRange + 0.35;
+                    // Clamp endRange to 1
 
-                {/* Items */}
-                <div className="space-y-24 md:space-y-32">
-                    {timeline.items && timeline.items.map((item, idx) => (
-                        <TimelineItem key={idx} item={item} idx={idx} />
-                    ))}
-                </div>
+                    return (
+                        <TimelineItem3D
+                            key={idx}
+                            item={item}
+                            range={[startRange, Math.min(endRange, 1)]}
+                            scrollYProgress={scrollYProgress}
+                            total={timeline.items.length}
+                            index={idx}
+                        />
+                    );
+                })}
             </div>
         </section>
     );
 };
 
-const TimelineItem = ({ item, idx }) => {
-    const ref = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: ref,
-        offset: ["start end", "center center"]
-    });
+const TimelineItem3D = ({ item, range, scrollYProgress, index }) => {
+    // Z-Axis movement: Start far away (-2000px), move past camera (1000px)
+    const z = useTransform(scrollYProgress, range, [-2000, 1000]);
 
-    const opacity = useTransform(scrollYProgress, [0, 0.5], [0, 1]);
-    const x = useTransform(scrollYProgress, [0.2, 0.5], [idx % 2 === 0 ? -50 : 50, 0]);
+    // Fade in when appearing, fade out when too close
+    const opacity = useTransform(scrollYProgress, [range[0], range[0] + 0.05, range[1] - 0.1, range[1]], [0, 1, 1, 0]);
 
-    // On mobile, everything is left aligned to the beam (beam is at left: 20px)
-    // On desktop, beam is center, so we alternate left/right.
-    const isEven = idx % 2 === 0;
+    // Randomize slight positioning for "floating" feel, but keep legible
+    const xOffset = index % 2 === 0 ? "-25%" : "25%";
+    const rotZ = index % 2 === 0 ? -2 : 2;
 
     return (
         <motion.div
-            ref={ref}
-            style={{ opacity, x }}
-            className={`relative flex flex-col md:flex-row items-center md:justify-between ${isEven ? 'md:flex-row-reverse' : ''}`}
+            style={{ z, opacity, x: xOffset, rotateZ: rotZ }}
+            className="absolute flex flex-col items-center justify-center p-8 md:p-12 w-[85vw] md:w-[600px] border border-white/20 bg-black/60 backdrop-blur-xl rounded-3xl shadow-[0_0_100px_rgba(249,115,22,0.15)] will-change-transform transform-gpu"
         >
-            {/* Spacer for Desktop Alignment */}
-            <div className="hidden md:block flex-1" />
-
-            {/* Central Node on the Beam */}
-            <div className="absolute left-[20px] md:left-1/2 w-4 h-4 bg-black border-2 border-orange-500 rounded-full md:-translate-x-1/2 z-10 shadow-[0_0_15px_orange] mt-8 md:mt-0" />
-
-            {/* Content Card */}
-            <div className="flex-1 w-full pl-16 md:pl-16 md:pr-0">
-                <motion.div
-                    whileHover={{ scale: 1.02, backgroundColor: "rgba(255,140,0,0.05)" }}
-                    className={`relative p-8 rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md transition-all duration-300 group hover:border-orange-500/30 hover:shadow-[0_0_30px_rgba(249,115,22,0.1)]`}
-                >
-                    {/* Glowing Corner */}
-                    <div className="absolute -top-1 -right-1 w-20 h-20 bg-gradient-to-br from-orange-500/20 to-transparent rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                    <div className="flex flex-col gap-4 relative z-10">
-                        <span className="inline-block bg-orange-500/10 text-orange-400 font-bold px-4 py-1 rounded-full text-sm w-fit border border-orange-500/20 shadow-[0_0_10px_rgba(249,115,22,0.2)]">
-                            {item.year}
-                        </span>
-
-                        <h3 className="text-3xl font-bold text-white leading-tight">
-                            {item.role}
-                        </h3>
-
-                        <div className="h-0.5 w-12 bg-gradient-to-r from-orange-500 to-transparent" />
-
-                        <p className="text-gray-400 text-lg leading-relaxed">
-                            {item.desc}
-                        </p>
-                    </div>
-                </motion.div>
+            <div className="absolute -top-6 md:-top-10 bg-orange-500 text-black font-black text-2xl md:text-4xl px-4 md:px-6 py-2 md:py-4 rounded-full shadow-[0_0_30px_#f97316]">
+                {item.year}
             </div>
+
+            <h3 className="text-2xl md:text-5xl font-bold text-white mb-4 md:mb-6 text-center mt-4 md:mt-6">{item.role}</h3>
+
+            <p className="text-gray-300 text-base md:text-2xl text-center leading-relaxed font-light">
+                {item.desc}
+            </p>
+
+            <div className="mt-6 md:mt-8 flex gap-2">
+                <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-red-500 animate-pulse" />
+                <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-orange-500 animate-pulse delay-75" />
+                <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-yellow-500 animate-pulse delay-150" />
+            </div>
+        </motion.div>
+    )
+}
+
+const WarpBackground = ({ scrollYProgress }) => {
+    const scale = useTransform(scrollYProgress, [0, 1], [1, 5]);
+    const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 1, 0.3]);
+
+    return (
+        <motion.div
+            style={{ scale, opacity }}
+            className="absolute inset-0 w-full h-full pointer-events-none z-0"
+        >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_white_1px,_transparent_1px)] bg-[length:50px_50px] opacity-20" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#f97316_2px,_transparent_2px)] bg-[length:150px_150px] opacity-10" />
         </motion.div>
     );
 }
