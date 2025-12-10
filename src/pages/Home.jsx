@@ -208,13 +208,14 @@ const TimelineItem = ({ item, index }) => {
             <div className="absolute -left-[49px] md:-left-[73px] top-0 w-5 h-5 bg-black border-[2px] border-orange-500 rounded-full z-20 shadow-[0_0_15px_#f97316] mt-1.5" />
 
             <div className="group relative bg-[#0a0a0a] border border-white/10 p-8 md:p-10 rounded-2xl hover:border-orange-500/30 transition-all duration-300 shadow-2xl">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-                    <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-orange-400 transition-colors">
+                {/* Changed Layout: Year is now on TOP of title to prevent overlap */}
+                <div className="flex flex-col mb-6">
+                    <span className="inline-block self-start bg-orange-900/20 border border-orange-500/20 text-orange-400 font-bold px-4 py-2 rounded-full text-sm mb-3">
+                        {item.year}
+                    </span>
+                    <h3 className="text-2xl md:text-3xl font-bold text-white group-hover:text-orange-400 transition-colors leading-tight">
                         {item.role}
                     </h3>
-                    <div className="inline-block bg-orange-900/20 border border-orange-500/20 text-orange-400 font-bold px-4 py-2 rounded-full text-sm">
-                        {item.year}
-                    </div>
                 </div>
 
                 <p className="text-gray-400 text-lg leading-relaxed border-l-2 border-orange-500/20 pl-6">
