@@ -145,8 +145,11 @@ const TimelineSection = ({ timeline }) => {
     });
 
     return (
-        <section ref={targetRef} id="timeline" className="relative h-[500vh] bg-[#050505]">
-            <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden perspective-1000">
+        <section ref={targetRef} id="timeline" className="relative h-[400vh] bg-[#000000] z-30 overflow-hidden">
+            <div
+                className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center"
+                style={{ perspective: "1000px" }}
+            >
 
                 {/* Space Warp Lines / Stars Background */}
                 <WarpBackground scrollYProgress={scrollYProgress} />
@@ -154,36 +157,32 @@ const TimelineSection = ({ timeline }) => {
                 {/* Main Title appearing first */}
                 <motion.div
                     style={{
-                        z: useTransform(scrollYProgress, [0, 0.2], [0, 1000]),
-                        opacity: useTransform(scrollYProgress, [0, 0.15], [1, 0]),
-                        scale: useTransform(scrollYProgress, [0, 0.2], [1, 3])
+                        z: useTransform(scrollYProgress, [0, 0.2], [0, 500]),
+                        opacity: useTransform(scrollYProgress, [0, 0.1], [1, 0]),
+                        scale: useTransform(scrollYProgress, [0, 0.2], [1, 2])
                     }}
-                    className="absolute z-50 text-center pointer-events-none"
+                    className="absolute z-20 text-center pointer-events-none p-4"
                 >
-                    <h2 className="text-orange-500 font-bold mb-4 uppercase tracking-[0.5em] text-xl md:text-2xl">{timeline.subtitle}</h2>
-                    <h2 className="text-6xl md:text-9xl font-black text-white font-header drop-shadow-[0_0_50px_rgba(255,255,255,0.5)]">{timeline.title}</h2>
-                    <p className="text-white/60 mt-8 text-xl">Accrochez-vous, passage en hyper-espace.</p>
+                    <h2 className="text-orange-500 font-bold mb-4 uppercase tracking-[0.5em] text-sm md:text-xl">{timeline.subtitle}</h2>
+                    <h2 className="text-5xl md:text-9xl font-black text-white font-header drop-shadow-[0_0_50px_rgba(255,255,255,0.5)]">{timeline.title}</h2>
                 </motion.div>
 
                 {/* 3D Timeline Items */}
-                {timeline.items && timeline.items.map((item, idx) => {
-                    // Calculate scroll ranges for each item
-                    // Spread them out over the 0.2 to 1.0 range
-                    const startRange = 0.15 + (idx * 0.15);
-                    const endRange = startRange + 0.35;
-                    // Clamp endRange to 1
-
-                    return (
-                        <TimelineItem3D
-                            key={idx}
-                            item={item}
-                            range={[startRange, Math.min(endRange, 1)]}
-                            scrollYProgress={scrollYProgress}
-                            total={timeline.items.length}
-                            index={idx}
-                        />
-                    );
-                })}
+                <div className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none" style={{ transformStyle: 'preserve-3d' }}>
+                    {timeline.items && timeline.items.map((item, idx) => {
+                        const startRange = 0.1 + (idx * 0.2);
+                        const endRange = startRange + 0.3;
+                        return (
+                            <TimelineItem3D
+                                key={idx}
+                                item={item}
+                                range={[startRange, Math.min(endRange, 0.95)]}
+                                scrollYProgress={scrollYProgress}
+                                index={idx}
+                            />
+                        );
+                    })}
+                </div>
             </div>
         </section>
     );
@@ -191,27 +190,28 @@ const TimelineSection = ({ timeline }) => {
 
 const TimelineItem3D = ({ item, range, scrollYProgress, index }) => {
     // Z-Axis movement: Start far away (-2000px), move past camera (1000px)
-    const z = useTransform(scrollYProgress, range, [-2000, 1000]);
+    const z = useTransform(scrollYProgress, range, [-3000, 1000]);
 
     // Fade in when appearing, fade out when too close
-    const opacity = useTransform(scrollYProgress, [range[0], range[0] + 0.05, range[1] - 0.1, range[1]], [0, 1, 1, 0]);
+    const opacity = useTransform(scrollYProgress, [range[0], range[0] + 0.05, range[1] - 0.15, range[1]], [0, 1, 1, 0]);
 
     // Randomize slight positioning for "floating" feel, but keep legible
     const xOffset = index % 2 === 0 ? "-25%" : "25%";
-    const rotZ = index % 2 === 0 ? -2 : 2;
+    const rotZ = index % 2 === 0 ? -4 : 4;
+    const yOffset = index % 2 === 0 ? "10%" : "-10%";
 
     return (
         <motion.div
-            style={{ z, opacity, x: xOffset, rotateZ: rotZ }}
-            className="absolute flex flex-col items-center justify-center p-8 md:p-12 w-[85vw] md:w-[600px] border border-white/20 bg-black/60 backdrop-blur-xl rounded-3xl shadow-[0_0_100px_rgba(249,115,22,0.15)] will-change-transform transform-gpu"
+            style={{ z, opacity, x: xOffset, y: yOffset, rotateZ: rotZ }}
+            className="absolute flex flex-col items-center justify-center p-8 md:p-12 w-[85vw] md:w-[600px] border border-white/20 bg-black/80 backdrop-blur-xl rounded-3xl shadow-[0_0_100px_rgba(249,115,22,0.2)] will-change-transform transform-gpu shadow-orange-500/20"
         >
             <div className="absolute -top-6 md:-top-10 bg-orange-500 text-black font-black text-2xl md:text-4xl px-4 md:px-6 py-2 md:py-4 rounded-full shadow-[0_0_30px_#f97316]">
                 {item.year}
             </div>
 
-            <h3 className="text-2xl md:text-5xl font-bold text-white mb-4 md:mb-6 text-center mt-4 md:mt-6">{item.role}</h3>
+            <h3 className="text-2xl md:text-5xl font-bold text-white mb-4 md:mb-6 text-center mt-4 md:mt-6 drop-shadow-lg">{item.role}</h3>
 
-            <p className="text-gray-300 text-base md:text-2xl text-center leading-relaxed font-light">
+            <p className="text-gray-200 text-base md:text-2xl text-center leading-relaxed font-light">
                 {item.desc}
             </p>
 
@@ -225,16 +225,16 @@ const TimelineItem3D = ({ item, range, scrollYProgress, index }) => {
 }
 
 const WarpBackground = ({ scrollYProgress }) => {
-    const scale = useTransform(scrollYProgress, [0, 1], [1, 5]);
-    const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 1, 0.3]);
+    const scale = useTransform(scrollYProgress, [0, 1], [1, 8]);
+    const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.1, 0.8, 0.1]);
 
     return (
         <motion.div
             style={{ scale, opacity }}
             className="absolute inset-0 w-full h-full pointer-events-none z-0"
         >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_white_1px,_transparent_1px)] bg-[length:50px_50px] opacity-20" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#f97316_2px,_transparent_2px)] bg-[length:150px_150px] opacity-10" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_white_1px,_transparent_1px)] bg-[length:30px_30px] opacity-30" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#f97316_2px,_transparent_2px)] bg-[length:100px_100px] opacity-20" />
         </motion.div>
     );
 }
