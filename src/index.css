@@ -481,5 +481,31 @@ a {
 /* Navbar Active State */
 .active-link {
   color: white !important;
-  border-bottom: 2px solid #4db5ff;
+  border-bottom: 2px solid #22d3ee;
+  /* cyan-400 */
+}
+
+/* Custom Cursor Fix */
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+}
+
+/* Planet Image Fix */
+.planet-img {
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 1/1;
+  object-fit: contain;
+  border-radius: 50%;
+  flex-shrink: 0;
+  z-index: 0;
+  pointer-events: none;
+  /* Ensure it's not distorted */
+  min-width: 300px;
+  min-height: 300px;
 }

@@ -22,7 +22,7 @@ export default function CustomCursor() {
 
     return (
         <motion.div
-            className="fixed pointer-events-none z-[9999] mix-blend-difference"
+            className="custom-cursor"
             style={{
                 translateX: cursorXSpring,
                 translateY: cursorYSpring,
