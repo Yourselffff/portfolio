@@ -47,31 +47,31 @@ const TiltCard = ({ item, color, setModal, isVeille = false }) => {
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
             onClick={() => setModal({ ...item, color })}
-            className="group relative h-[350px] w-full rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 cursor-none shadow-2xl"
+            className="group tilt-card transform-style-3d"
         >
             <div
                 style={{
                     transform: "translateZ(75px)",
                     transformStyle: "preserve-3d"
                 }}
-                className="absolute inset-4 flex flex-col justify-between"
+                className="tilt-card-content"
             >
                 <div>
-                    <div className={`w-12 h-1 rounded mb-4`} style={{ background: color, boxShadow: `0 0 20px ${color}` }} />
-                    <h3 className="text-2xl font-bold text-white font-header mb-2 group-hover:text-cyan-300 transition-colors">{item.title}</h3>
-                    <span className="text-xs font-mono text-white/50 border border-white/10 px-2 py-1 rounded inline-block mb-4">{item.tech}</span>
-                    <p className="text-gray-400 text-sm leading-relaxed line-clamp-3">
+                    <div className="w-12 h-1 rounded mb-4" style={{ background: color, boxShadow: `0 0 20px ${color}` }} />
+                    <h3 className="text-2xl font-bold font-header mb-2 tilt-card-title">{item.title}</h3>
+                    <span className="text-xs font-mono text-gray-400 border border-white/10 px-2 py-1 rounded inline-block mb-4">{item.tech}</span>
+                    <p className="text-gray-400 text-sm leading-relaxed" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                         {item.desc}
                     </p>
                 </div>
 
                 <div className="flex items-center text-sm font-bold" style={{ color: color }}>
-                    Voir Détails <span className="ml-2 group-hover:translate-x-2 transition-transform">→</span>
+                    Voir Détails <span className="ml-2 transition-transform" style={{ display: 'inline-block', transition: 'transform 0.3s' }}>→</span>
                 </div>
             </div>
 
             {/* Holographic Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-xl" />
+            <div className="tilt-card-overlay" />
         </motion.div>
     );
 };

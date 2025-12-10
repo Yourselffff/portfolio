@@ -88,14 +88,14 @@ function SpotlightCard({ children, delay }) {
 
     return (
         <motion.div
-            className="group relative border border-white/10 bg-white/5 rounded-xl px-8 py-10 overflow-hidden"
+            className="spotlight-card"
             onMouseMove={handleMouseMove}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay, duration: 0.5 }}
         >
             <motion.div
-                className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100"
+                className="spotlight-overlay"
                 style={{
                     background: useMotionTemplate`
                         radial-gradient(
