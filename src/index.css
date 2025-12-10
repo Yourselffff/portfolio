@@ -317,15 +317,18 @@ nav {
 .planet-img {
   width: 600px;
   height: 600px;
-  object-fit: cover;
-  /* Ensures image covers the circle without distortion */
+  object-fit: contain;
+  /* Changed to contain to avoid cropping if aspect ratio is off */
   border-radius: 50%;
   /* Makes the image perfectly round */
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.8) inset;
   /* Inner shadow for depth */
   filter: drop-shadow(0 0 60px rgba(0, 0, 0, 0.4));
   position: relative;
-  z-index: 2;
+  z-index: 0;
+  /* Lower z-index to stay behind text if overlap occurs */
+  flex-shrink: 0;
+  /* Prevent squashing */
 }
 
 .planet-glow {
