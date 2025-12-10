@@ -124,7 +124,7 @@ export default function Home() {
                                     initial={{ opacity: 0, y: 50 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     transition={{ delay: idx * 0.2 }}
-                                    className="relative pl-8 pb-12 border-l border-white/10 last:pb-0 last:border-0 hover:bg-white/5 p-4 rounded-xl transition-colors"
+                                    className="timeline-card relative pl-8 pb-12 last:pb-0 transition-colors"
                                 >
                                     <span className="absolute -left-[5px] top-6 w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_10px_orange]" />
                                     <span className="text-orange-400 font-bold text-sm mb-1 block">{item.year}</span>

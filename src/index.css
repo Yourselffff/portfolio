@@ -15,7 +15,17 @@
 body {
   font-family: var(--font-main);
   background-color: #050505;
-  /* Deep black space background */
+  background-image:
+    radial-gradient(circle at 50% 50%, #1a1a2e 0%, #050505 100%),
+    radial-gradient(1px 1px at 10% 10%, #fff 100%, transparent),
+    radial-gradient(1px 1px at 20% 20%, #fff 100%, transparent),
+    radial-gradient(2px 2px at 30% 30%, #ffffff 100%, transparent),
+    radial-gradient(2px 2px at 40% 40%, #ffffff 100%, transparent),
+    radial-gradient(1px 1px at 50% 50%, #ffffff 100%, transparent),
+    radial-gradient(2px 2px at 90% 90%, #ffffff 100%, transparent);
+  background-size: 100% 100%, 550px 550px, 350px 350px, 250px 250px, 150px 150px, 450px 450px, 650px 650px;
+  background-repeat: no-repeat, repeat, repeat, repeat, repeat, repeat, repeat;
+  /* Deep black space background with stars */
   color: #ffffff;
   overflow-x: hidden;
   width: 100vw;
@@ -32,6 +42,80 @@ body {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+/* Navbar Styles (Re-added & Left Aligned) */
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 1.5rem 3rem;
+  display: flex;
+  justify-content: flex-start;
+  /* Changed from space-between to flex-start */
+  align-items: center;
+  gap: 4rem;
+  /* Add spacing between logo and links */
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.logo {
+  font-family: var(--font-header);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: var(--font-main);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: white;
+}
+
+/* Timeline/Parcours Enhancements */
+#timeline {
+  position: relative;
+  z-index: 10;
+}
+
+.timeline-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(5px);
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.timeline-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateX(10px);
+  box-shadow: 0 0 20px rgba(251, 146, 60, 0.15);
+  /* Orange glow */
 }
 
 /* --- UTILITY CLASSES REPLACEMENT --- */
