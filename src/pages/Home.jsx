@@ -99,42 +99,9 @@ export default function Home() {
                 </section>
             )}
 
-            {/* Experience Section (Timeline) */}
+            {/* Experience Section (Horizontal Scroll "Apple Style") */}
             {timeline.id && (
-                <section id="timeline" className="py-24 bg-black/20 relative">
-                    <div className="absolute top-0 right-0 w-full h-full overflow-hidden pointer-events-none">
-                        <motion.div
-                            style={{ y: useTransform(scrollYProgress, [0.3, 0.6], [100, -100]) }}
-                            className="absolute top-1/4 right-[-10%] opacity-20"
-                        >
-                            <img src={timeline.planet} alt="Jupiter" className="w-[800px] h-[800px] object-contain blur-3xl" />
-                        </motion.div>
-                    </div>
-
-                    <div className="container mx-auto px-6 relative z-10">
-                        <div className="text-center mb-16">
-                            <h2 className="text-orange-400 font-bold mb-2 uppercase">{timeline.subtitle}</h2>
-                            <h2 className="text-4xl md:text-5xl font-bold text-white font-header">{timeline.title}</h2>
-                        </div>
-
-                        <div className="max-w-4xl mx-auto">
-                            {timeline.items && timeline.items.map((item, idx) => (
-                                <motion.div
-                                    key={idx}
-                                    initial={{ opacity: 0, y: 50 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: idx * 0.2 }}
-                                    className="timeline-card relative pl-8 pb-12 last:pb-0 transition-colors"
-                                >
-                                    <span className="absolute -left-[5px] top-6 w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_10px_orange]" />
-                                    <span className="text-orange-400 font-bold text-sm mb-1 block">{item.year}</span>
-                                    <h3 className="text-2xl font-bold text-white mb-2">{item.role}</h3>
-                                    <p className="text-gray-400">{item.desc}</p>
-                                </motion.div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
+                <TimelineSection timeline={timeline} />
             )}
 
             {/* Contact Footer */}
@@ -172,3 +139,58 @@ export default function Home() {
         </div>
     );
 }
+
+const TimelineSection = ({ timeline }) => {
+    const targetRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: targetRef,
+    });
+
+    // Map vertical scroll (0 to 1) to horizontal movement (0% to -X%)
+    // Adjust -55% based on number of items to ensure we see the last one
+    const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]);
+
+    return (
+        <section ref={targetRef} id="timeline" className="relative h-[300vh] bg-black/10">
+            <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+
+                {/* Section Header (Fixed or moving slowly) */}
+                <div className="container mx-auto px-6 mb-12 relative z-20">
+                    <h2 className="text-orange-400 font-bold mb-2 uppercase tracking-widest">{timeline.subtitle}</h2>
+                    <h2 className="text-5xl md:text-7xl font-bold text-white font-header">{timeline.title}</h2>
+                    <p className="text-white/50 mt-4 max-w-md">Défilez vers le bas pour explorer mon parcours temporel →</p>
+                </div>
+
+                {/* Horizontal Scrolling Cards */}
+                <motion.div style={{ x }} className="flex gap-12 px-24 w-max items-center">
+                    {timeline.items && timeline.items.map((item, idx) => (
+                        <div key={idx} className="group relative w-[500px] h-[400px] flex-shrink-0 perspective-1000">
+                            <div className="w-full h-full bg-white/5 border border-white/10 rounded-2xl p-8 flex flex-col justify-between backdrop-blur-md transition-all duration-500 hover:bg-white/10 hover:border-orange-500/30 hover:scale-105 shadow-2xl">
+
+                                {/* Year Badge */}
+                                <div className="absolute -top-6 -left-6 w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center font-bold text-black text-xl shadow-[0_0_30px_rgba(249,115,22,0.4)] z-10">
+                                    {item.year}
+                                </div>
+
+                                <div className="mt-8">
+                                    <h3 className="text-3xl font-bold text-white mb-4 leading-tight">{item.role}</h3>
+                                    <div className="h-1 w-20 bg-gradient-to-r from-orange-500 to-transparent mb-6" />
+                                    <p className="text-lg text-gray-400 leading-relaxed">
+                                        {item.desc}
+                                    </p>
+                                </div>
+
+                                <div className="text-right">
+                                    <span className="text-orange-400 font-mono text-sm opacity-50 group-hover:opacity-100 transition-opacity">0{idx + 1} / 0{timeline.items.length}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </motion.div>
+
+                {/* Background Decor */}
+                <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-orange-500/30 to-transparent -z-10" />
+            </div>
+        </section>
+    );
+};
