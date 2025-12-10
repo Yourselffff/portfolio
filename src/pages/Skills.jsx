@@ -1,25 +1,9 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaCode } from 'react-icons/fa';
+import React, { useRef, useState } from 'react';
+import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
 import { sections } from '../data';
 
 export default function Skills() {
-    // Filter only the skills section
     const skillSection = sections.find(s => s.id === 'skills');
-
-    // Custom animation for cards
-    const cardVariants = {
-        hidden: { opacity: 0, y: 20 },
-        visible: (i) => ({
-            opacity: 1,
-            y: 0,
-            transition: {
-                delay: i * 0.1,
-                duration: 0.5,
-                ease: "easeOut"
-            }
-        })
-    };
 
     return (
         <div className="page-container relative pt-24 pb-12 px-4 md:px-12 min-h-screen">
@@ -41,42 +25,88 @@ export default function Skills() {
                 </motion.h1>
             </div>
 
-            {/* Skills Grid - New Layout */}
+            {/* Skills Grid - Spotlight Effect */}
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {skillSection.categories.map((cat, categoryIndex) => (
-                    <motion.div
-                        key={categoryIndex}
-                        custom={categoryIndex}
-                        initial="hidden"
-                        animate="visible"
-                        variants={cardVariants}
-                        className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors"
-                    >
-                        <h3 className="text-xl font-bold text-yellow-400 mb-6 font-header border-b border-white/10 pb-2">
+                    <SpotlightCard key={categoryIndex} delay={categoryIndex * 0.1}>
+                        <h3 className="text-xl font-bold text-yellow-400 mb-6 font-header border-b border-white/10 pb-2 relative z-10">
                             {cat.title}
                         </h3>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-2 relative z-10">
                             {cat.skills.map((skill, skillIndex) => (
-                                <span
+                                <motion.span
                                     key={skillIndex}
-                                    className="px-3 py-1 bg-white/10 rounded-full text-sm hover:bg-yellow-400/20 hover:text-yellow-300 transition-colors cursor-default"
+                                    whileHover={{ scale: 1.1, backgroundColor: "rgba(250, 204, 21, 0.2)" }}
+                                    className="px-3 py-1 bg-white/10 rounded-full text-sm text-white transition-colors cursor-none border border-white/5"
                                 >
                                     {skill}
-                                </span>
+                                </motion.span>
                             ))}
                         </div>
-                    </motion.div>
+                    </SpotlightCard>
                 ))}
             </div>
 
-            {/* Decorative Planet - Different position/style */}
-            <motion.div
-                className="fixed -bottom-32 -right-32 -z-10 opacity-30 pointer-events-none"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 150, repeat: Infinity, ease: 'linear' }}
-            >
-                <img src={skillSection.planet} alt="planet" className="w-[600px] h-[600px] object-cover" />
-            </motion.div>
+            {/* Floating Orbs Background */}
+            <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+                {[...Array(5)].map((_, i) => (
+                    <motion.div
+                        key={i}
+                        className="absolute rounded-full bg-yellow-500/10 blur-[100px]"
+                        style={{
+                            width: Math.random() * 400 + 200,
+                            height: Math.random() * 400 + 200,
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                        }}
+                        animate={{
+                            x: [0, Math.random() * 100 - 50],
+                            y: [0, Math.random() * 100 - 50],
+                        }}
+                        transition={{
+                            duration: 20,
+                            repeat: Infinity,
+                            repeatType: "reverse",
+                            ease: "easeInOut"
+                        }}
+                    />
+                ))}
+            </div>
         </div>
+    );
+}
+
+function SpotlightCard({ children, delay }) {
+    const mouseX = useMotionValue(0);
+    const mouseY = useMotionValue(0);
+
+    function handleMouseMove({ currentTarget, clientX, clientY }) {
+        const { left, top } = currentTarget.getBoundingClientRect();
+        mouseX.set(clientX - left);
+        mouseY.set(clientY - top);
+    }
+
+    return (
+        <motion.div
+            className="group relative border border-white/10 bg-white/5 rounded-xl px-8 py-10 overflow-hidden"
+            onMouseMove={handleMouseMove}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay, duration: 0.5 }}
+        >
+            <motion.div
+                className="pointer-events-none absolute -inset-px rounded-xl opacity-0 transition duration-300 group-hover:opacity-100"
+                style={{
+                    background: useMotionTemplate`
+                        radial-gradient(
+                        650px circle at ${mouseX}px ${mouseY}px,
+                        rgba(255, 255, 255, 0.15),
+                        transparent 80%
+                        )
+                    `,
+                }}
+            />
+            {children}
+        </motion.div>
     );
 }

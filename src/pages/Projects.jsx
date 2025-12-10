@@ -1,24 +1,100 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useRef, useState } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { sections } from '../data';
+
+// 3D Tilt Card Component
+const TiltCard = ({ item, color, setModal, isVeille = false }) => {
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
+    const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
+    const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
+
+    const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["17deg", "-17deg"]);
+    const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-17deg", "17deg"]);
+
+    const handleMouseMove = (e) => {
+        const rect = e.target.getBoundingClientRect();
+
+        const width = rect.width;
+        const height = rect.height;
+
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        const xPct = mouseX / width - 0.5;
+        const yPct = mouseY / height - 0.5;
+
+        x.set(xPct);
+        y.set(yPct);
+    };
+
+    const handleMouseLeave = () => {
+        x.set(0);
+        y.set(0);
+    };
+
+    return (
+        <motion.div
+            style={{
+                rotateX,
+                rotateY,
+                transformStyle: "preserve-3d",
+            }}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            onClick={() => setModal({ ...item, color })}
+            className="group relative h-[350px] w-full rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 cursor-none shadow-2xl"
+        >
+            <div
+                style={{
+                    transform: "translateZ(75px)",
+                    transformStyle: "preserve-3d"
+                }}
+                className="absolute inset-4 flex flex-col justify-between"
+            >
+                <div>
+                    <div className={`w-12 h-1 rounded mb-4`} style={{ background: color, boxShadow: `0 0 20px ${color}` }} />
+                    <h3 className="text-2xl font-bold text-white font-header mb-2 group-hover:text-cyan-300 transition-colors">{item.title}</h3>
+                    <span className="text-xs font-mono text-white/50 border border-white/10 px-2 py-1 rounded inline-block mb-4">{item.tech}</span>
+                    <p className="text-gray-400 text-sm leading-relaxed line-clamp-3">
+                        {item.desc}
+                    </p>
+                </div>
+
+                <div className="flex items-center text-sm font-bold" style={{ color: color }}>
+                    Voir Détails <span className="ml-2 group-hover:translate-x-2 transition-transform">→</span>
+                </div>
+            </div>
+
+            {/* Holographic Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none rounded-xl" />
+        </motion.div>
+    );
+};
+
+// ... Rest of the file handling Modal etc. ...
+// We need to re-implement the full page structure
+
+import { AnimatePresence } from 'framer-motion';
 
 export default function Projects() {
     const [selectedProject, setSelectedProject] = useState(null);
     const projects = sections.find(s => s.id === 'projects');
     const veille = sections.find(s => s.id === 'veille');
 
-    // Combine both projects and veille for a "Work" page, or keep them separate sections
-    // User wants "Projets et Skill dans des pages differentes" -> Projects page
-
     return (
-        <div className="page-container relative pt-24 pb-12 px-4 md:px-12 min-h-screen">
+        <div className="page-container relative pt-24 pb-12 px-4 md:px-12 min-h-screen perspective-1000">
 
             {/* Projects Section */}
             <div className="max-w-7xl mx-auto mb-24">
                 <Header title={projects.title} subtitle={projects.subtitle} />
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {projects.items.map((item, idx) => (
-                        <ProjectCard key={idx} item={item} color={projects.color} setModal={setSelectedProject} />
+                        <TiltCard key={idx} item={item} color={projects.color} setModal={setSelectedProject} />
                     ))}
                 </div>
             </div>
@@ -28,7 +104,7 @@ export default function Projects() {
                 <Header title={veille.title} subtitle={veille.subtitle} />
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
                     {veille.items.map((item, idx) => (
-                        <ProjectCard key={idx} item={item} color={veille.color} setModal={setSelectedProject} isVeille={true} />
+                        <TiltCard key={idx} item={item} color={veille.color} setModal={setSelectedProject} isVeille={true} />
                     ))}
                 </div>
             </div>
@@ -50,38 +126,19 @@ const Header = ({ title, subtitle }) => (
     </div>
 );
 
-const ProjectCard = ({ item, color, setModal, isVeille = false }) => (
-    <motion.div
-        layoutId={`card-${item.title}`}
-        onClick={() => setModal({ ...item, color })}
-        className="group relative bg-[#101018] border border-white/10 rounded-xl overflow-hidden cursor-pointer hover:border-white/30 transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-2xl"
-    >
-        <div className={`h-2 w-full`} style={{ background: color }}></div>
-        <div className="p-6">
-            <div className="flex justify-between items-start mb-4">
-                <h3 className="text-xl font-bold text-white font-header group-hover:text-cyan-300 transition-colors">{item.title}</h3>
-                <span className="text-xs font-mono text-white/50 border border-white/10 px-2 py-1 rounded">{item.tech}</span>
-            </div>
-            <p className="text-gray-400 text-sm leading-relaxed line-clamp-3">
-                {item.desc}
-            </p>
-            <div className="mt-6 flex items-center text-sm font-bold" style={{ color: color }}>
-                Voir Détails <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-            </div>
-        </div>
-    </motion.div>
-);
-
 const Modal = ({ item, onClose }) => (
     <motion.div
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
+        className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm cursor-auto"
         onClick={onClose}
     >
         <motion.div
-            layoutId={`card-${item.title}`}
-            className="bg-[#1a1a24] w-full max-w-2xl rounded-2xl border border-white/10 overflow-hidden shadow-2xl"
+            layoutId={`card-${item.title}`} // Note: layoutId disabled for tilt card simple transition standard
+            className="bg-[#1a1a24] w-full max-w-2xl rounded-2xl border border-white/10 overflow-hidden shadow-2xl relative"
             onClick={e => e.stopPropagation()}
+            initial={{ scale: 0.8, rotateX: 20 }}
+            animate={{ scale: 1, rotateX: 0 }}
+            exit={{ scale: 0.8, opacity: 0 }}
         >
             <div className={`h-2 w-full`} style={{ background: item.color || '#fff' }}></div>
             <div className="p-8 md:p-12 relative">

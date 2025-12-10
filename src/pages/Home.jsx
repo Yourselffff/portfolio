@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import React, { useRef, useState } from 'react';
+import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { sections } from '../data';
 
 export default function Home() {
@@ -8,43 +8,64 @@ export default function Home() {
     const timeline = sections.find(s => s.id === 'timeline') || {};
     const contact = sections.find(s => s.id === 'contact') || {};
 
-    // Parallax & Rotation Logic
+    // 1. Mouse Parallax Logic
+    // We track mouse position relative to the window center
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
+
+    // Create a smooth spring animation for the tracking
+    const mouseXSpring = useSpring(x, { stiffness: 50, damping: 20 });
+    const mouseYSpring = useSpring(y, { stiffness: 50, damping: 20 });
+
+    const handleMouseMove = (e) => {
+        const { clientX, clientY } = e;
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
+        // Calculate distance from center (Example: -500 to 500)
+        x.set(clientX - centerX);
+        y.set(clientY - centerY);
+    };
+
+    // Parallax Transforms
+    const planetX = useTransform(mouseXSpring, [-500, 500], [20, -20]); // Moves opposite to mouse (Depth effect)
+    const planetY = useTransform(mouseYSpring, [-500, 500], [20, -20]);
+    const textX = useTransform(mouseXSpring, [-500, 500], [-10, 10]); // Moves with mouse slightly
+
+    // 2. Scroll Logic
     const containerRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end end"]
     });
 
-    // Global rotation for all planets based on scroll
     const rotate = useTransform(scrollYProgress, [0, 1], [0, 360]);
-    const yHero = useTransform(scrollYProgress, [0, 0.2], [0, -200]);
-    const opacityHero = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
     if (!intro.id) {
         return <div className="min-h-screen text-white flex items-center justify-center">Loading...</div>;
     }
 
     return (
-        <div ref={containerRef} className="min-h-screen relative">
+        <div ref={containerRef} className="min-h-screen relative" onMouseMove={handleMouseMove}>
 
-            {/* Hero Section (Intro) */}
-            <section id="intro" className="min-h-screen flex items-center justify-center relative overflow-hidden">
+            {/* Hero Section (Intro) - NOW REACTIVE TO MOUSE */}
+            <section id="intro" className="min-h-screen flex items-center justify-center relative overflow-hidden perspective-1000">
                 <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between z-10">
                     <motion.div
-                        style={{ y: yHero, opacity: opacityHero }}
+                        style={{ x: textX, y: planetY }}
                         className="flex-1 text-center md:text-left mb-12 md:mb-0"
                     >
                         <h2 className="text-cyan-400 font-bold mb-4 tracking-widest uppercase">{intro.subtitle}</h2>
-                        <h1 className="text-6xl md:text-8xl font-black font-header mb-6 text-white">{intro.title}</h1>
+                        <h1 className="text-6xl md:text-8xl font-black font-header mb-6 text-white drop-shadow-lg">{intro.title}</h1>
                         <p className="text-xl md:text-2xl text-gray-300 max-w-lg leading-relaxed">{intro.description}</p>
                     </motion.div>
 
                     <motion.div
-                        style={{ rotate }}
                         className="flex-1 flex justify-center"
+                        style={{ x: planetX, y: planetY, rotate }}
                     >
                         <div className="relative">
-                            <img src={intro.planet} alt="Earth" className="planet-img w-[300px] md:w-[600px] object-contain" />
+                            <img src={intro.planet} alt="Earth" className="planet-img w-[300px] md:w-[600px] object-contain drop-shadow-2xl" />
                             <div className="absolute inset-0 bg-blue-500/20 blur-[100px] -z-10 rounded-full" />
                         </div>
                     </motion.div>
@@ -103,9 +124,9 @@ export default function Home() {
                                     initial={{ opacity: 0, y: 50 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     transition={{ delay: idx * 0.2 }}
-                                    className="relative pl-8 pb-12 border-l border-white/10 last:pb-0 last:border-0"
+                                    className="relative pl-8 pb-12 border-l border-white/10 last:pb-0 last:border-0 hover:bg-white/5 p-4 rounded-xl transition-colors"
                                 >
-                                    <span className="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_10px_orange]" />
+                                    <span className="absolute -left-[5px] top-6 w-2.5 h-2.5 rounded-full bg-orange-500 shadow-[0_0_10px_orange]" />
                                     <span className="text-orange-400 font-bold text-sm mb-1 block">{item.year}</span>
                                     <h3 className="text-2xl font-bold text-white mb-2">{item.role}</h3>
                                     <p className="text-gray-400">{item.desc}</p>
