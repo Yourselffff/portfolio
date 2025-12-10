@@ -96,7 +96,7 @@ export default function Home() {
                 </section>
             )}
 
-            {/* Experience Section (3D Space Warp Timeline) */}
+            {/* Experience Section (Tunnel/Stargate Effect) */}
             {timeline.id && (
                 <TimelineSection timeline={timeline} />
             )}
@@ -145,96 +145,81 @@ const TimelineSection = ({ timeline }) => {
     });
 
     return (
-        <section ref={targetRef} id="timeline" className="relative h-[400vh] bg-[#000000] z-30 overflow-hidden">
-            <div
-                className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center"
-                style={{ perspective: "1000px" }}
-            >
+        <section ref={targetRef} id="timeline" className="relative h-[400vh] bg-black z-40">
+            <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
 
-                {/* Space Warp Lines / Stars Background */}
-                <WarpBackground scrollYProgress={scrollYProgress} />
+                {/* Background Tunnel Effect */}
+                <TunnelBackground scrollYProgress={scrollYProgress} />
 
-                {/* Main Title appearing first */}
+                {/* Title */}
                 <motion.div
                     style={{
-                        z: useTransform(scrollYProgress, [0, 0.2], [0, 500]),
-                        opacity: useTransform(scrollYProgress, [0, 0.1], [1, 0]),
-                        scale: useTransform(scrollYProgress, [0, 0.2], [1, 2])
+                        opacity: useTransform(scrollYProgress, [0, 0.15], [1, 0]),
+                        scale: useTransform(scrollYProgress, [0, 0.15], [1, 2])
                     }}
-                    className="absolute z-20 text-center pointer-events-none p-4"
+                    className="absolute z-50 text-center pointer-events-none"
                 >
-                    <h2 className="text-orange-500 font-bold mb-4 uppercase tracking-[0.5em] text-sm md:text-xl">{timeline.subtitle}</h2>
-                    <h2 className="text-5xl md:text-9xl font-black text-white font-header drop-shadow-[0_0_50px_rgba(255,255,255,0.5)]">{timeline.title}</h2>
+                    <h2 className="text-orange-500 font-bold mb-4 uppercase tracking-[0.5em] text-xl">{timeline.subtitle}</h2>
+                    <h2 className="text-6xl md:text-8xl font-black text-white drop-shadow-2xl">{timeline.title}</h2>
                 </motion.div>
 
-                {/* 3D Timeline Items */}
-                <div className="absolute inset-0 w-full h-full flex items-center justify-center pointer-events-none" style={{ transformStyle: 'preserve-3d' }}>
-                    {timeline.items && timeline.items.map((item, idx) => {
-                        const startRange = 0.1 + (idx * 0.2);
-                        const endRange = startRange + 0.3;
-                        return (
-                            <TimelineItem3D
-                                key={idx}
-                                item={item}
-                                range={[startRange, Math.min(endRange, 0.95)]}
-                                scrollYProgress={scrollYProgress}
-                                index={idx}
-                            />
-                        );
-                    })}
-                </div>
+                {/* Cards zooming in */}
+                {timeline.items && timeline.items.map((item, idx) => (
+                    <TunnelItem
+                        key={idx}
+                        item={item}
+                        index={idx}
+                        total={timeline.items.length}
+                        scrollYProgress={scrollYProgress}
+                    />
+                ))}
             </div>
         </section>
     );
 };
 
-const TimelineItem3D = ({ item, range, scrollYProgress, index }) => {
-    // Z-Axis movement: Start far away (-2000px), move past camera (1000px)
-    const z = useTransform(scrollYProgress, range, [-3000, 1000]);
+const TunnelItem = ({ item, index, total, scrollYProgress }) => {
+    // Calculate trigger points
+    const stepSize = 0.8 / total;
+    const start = 0.1 + (index * stepSize);
+    const end = start + stepSize + 0.1;
 
-    // Fade in when appearing, fade out when too close
-    const opacity = useTransform(scrollYProgress, [range[0], range[0] + 0.05, range[1] - 0.15, range[1]], [0, 1, 1, 0]);
-
-    // Randomize slight positioning for "floating" feel, but keep legible
-    const xOffset = index % 2 === 0 ? "-25%" : "25%";
-    const rotZ = index % 2 === 0 ? -4 : 4;
-    const yOffset = index % 2 === 0 ? "10%" : "-10%";
+    // Scale from 0 (background) to 1 (foreground) then 3 (past)
+    const scale = useTransform(scrollYProgress, [start, end], [0.2, 2]);
+    const opacity = useTransform(scrollYProgress, [start, start + 0.1, end - 0.1, end], [0, 1, 1, 0]);
+    const y = useTransform(scrollYProgress, [start, end], ["30%", "-10%"]); // Slight Upward motion to simulate "passing under" or "into"
 
     return (
         <motion.div
-            style={{ z, opacity, x: xOffset, y: yOffset, rotateZ: rotZ }}
-            className="absolute flex flex-col items-center justify-center p-8 md:p-12 w-[85vw] md:w-[600px] border border-white/20 bg-black/80 backdrop-blur-xl rounded-3xl shadow-[0_0_100px_rgba(249,115,22,0.2)] will-change-transform transform-gpu shadow-orange-500/20"
+            style={{ scale, opacity, y }}
+            className="absolute p-8 md:p-12 w-[90vw] md:w-[800px] border border-orange-500/20 bg-black/80 backdrop-blur-md rounded-3xl flex flex-col items-center text-center shadow-[0_0_50px_rgba(249,115,22,0.1)] origin-center z-40"
         >
-            <div className="absolute -top-6 md:-top-10 bg-orange-500 text-black font-black text-2xl md:text-4xl px-4 md:px-6 py-2 md:py-4 rounded-full shadow-[0_0_30px_#f97316]">
+            <div className="bg-orange-500 text-black font-bold px-6 py-2 rounded-full mb-6">
                 {item.year}
             </div>
-
-            <h3 className="text-2xl md:text-5xl font-bold text-white mb-4 md:mb-6 text-center mt-4 md:mt-6 drop-shadow-lg">{item.role}</h3>
-
-            <p className="text-gray-200 text-base md:text-2xl text-center leading-relaxed font-light">
-                {item.desc}
-            </p>
-
-            <div className="mt-6 md:mt-8 flex gap-2">
-                <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-red-500 animate-pulse" />
-                <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-orange-500 animate-pulse delay-75" />
-                <div className="w-2 h-2 md:w-3 md:h-3 rounded-full bg-yellow-500 animate-pulse delay-150" />
-            </div>
-        </motion.div>
-    )
-}
-
-const WarpBackground = ({ scrollYProgress }) => {
-    const scale = useTransform(scrollYProgress, [0, 1], [1, 8]);
-    const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.1, 0.8, 0.1]);
-
-    return (
-        <motion.div
-            style={{ scale, opacity }}
-            className="absolute inset-0 w-full h-full pointer-events-none z-0"
-        >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_white_1px,_transparent_1px)] bg-[length:30px_30px] opacity-30" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#f97316_2px,_transparent_2px)] bg-[length:100px_100px] opacity-20" />
+            <h3 className="text-4xl md:text-5xl font-bold text-white mb-6 drop-shadow-lg">{item.role}</h3>
+            <p className="text-xl md:text-2xl text-gray-300 leading-relaxed">{item.desc}</p>
         </motion.div>
     );
-}
+};
+
+const TunnelBackground = ({ scrollYProgress }) => {
+    // Simple radial gradient pulsing
+    const scale = useTransform(scrollYProgress, [0, 1], [0.5, 4]);
+    const rotate = useTransform(scrollYProgress, [0, 1], [0, 90]);
+
+    return (
+        <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+            <motion.div
+                style={{ scale, rotate }}
+                className="absolute inset-[-50%] w-[200%] h-[200%] flex items-center justify-center opacity-30"
+            >
+                <div className="absolute w-[80vw] h-[80vw] border-[1px] border-orange-900/30 rounded-full scale-[2]" />
+                <div className="absolute w-[60vw] h-[60vw] border-[2px] border-orange-800/30 rounded-full scale-[1.5]" />
+                <div className="absolute w-[40vw] h-[40vw] border-[3px] border-orange-600/30 rounded-full" />
+                <div className="absolute w-[20vw] h-[20vw] border-[4px] border-orange-500/20 rounded-full scale-[0.5]" />
+            </motion.div>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#000000_80%)]" />
+        </div>
+    );
+};
