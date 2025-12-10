@@ -144,44 +144,44 @@ const TimelineSection = ({ timeline }) => {
     const targetRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: targetRef,
+        offset: ["start start", "end end"]
     });
 
-    // Map vertical scroll (0 to 1) to horizontal movement (0% to -X%)
-    // Adjust -55% based on number of items to ensure we see the last one
-    const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]);
+    const x = useTransform(scrollYProgress, [0, 1], ["10%", "-85%"]);
 
     return (
-        <section ref={targetRef} id="timeline" className="relative h-[300vh] bg-black/10">
+        <section ref={targetRef} id="timeline" className="relative h-[400vh] bg-[#050505] z-20">
             <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
 
-                {/* Section Header (Fixed or moving slowly) */}
-                <div className="container mx-auto px-6 mb-12 relative z-20">
+                {/* Header */}
+                <div className="container mx-auto px-6 mb-8 relative z-20">
                     <h2 className="text-orange-400 font-bold mb-2 uppercase tracking-widest">{timeline.subtitle}</h2>
-                    <h2 className="text-5xl md:text-7xl font-bold text-white font-header">{timeline.title}</h2>
-                    <p className="text-white/50 mt-4 max-w-md">Défilez vers le bas pour explorer mon parcours temporel →</p>
+                    <h2 className="text-4xl md:text-6xl font-bold text-white font-header">{timeline.title}</h2>
+                    <p className="text-white/50 mt-2 text-sm md:text-base">Scrollez pour voyager dans le temps →</p>
                 </div>
 
-                {/* Horizontal Scrolling Cards */}
-                <motion.div style={{ x }} className="flex gap-12 px-24 w-max items-center">
+                {/* Cards Container */}
+                <motion.div style={{ x }} className="flex gap-8 px-8 md:px-24 items-center w-max">
                     {timeline.items && timeline.items.map((item, idx) => (
-                        <div key={idx} className="group relative w-[500px] h-[400px] flex-shrink-0 perspective-1000">
-                            <div className="w-full h-full bg-white/5 border border-white/10 rounded-2xl p-8 flex flex-col justify-between backdrop-blur-md transition-all duration-500 hover:bg-white/10 hover:border-orange-500/30 hover:scale-105 shadow-2xl">
+                        <div key={idx} className="relative w-[85vw] md:w-[600px] h-[50vh] md:h-[500px] flex-shrink-0 perspective-1000">
+                            <div className="w-full h-full bg-[#111] border border-white/10 rounded-3xl p-6 md:p-10 flex flex-col justify-between shadow-2xl relative overflow-hidden group hover:border-orange-500/50 transition-colors duration-500">
 
-                                {/* Year Badge */}
-                                <div className="absolute -top-6 -left-6 w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center font-bold text-black text-xl shadow-[0_0_30px_rgba(249,115,22,0.4)] z-10">
-                                    {item.year}
-                                </div>
+                                {/* Glow Effect */}
+                                <div className="absolute inset-0 bg-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
 
-                                <div className="mt-8">
-                                    <h3 className="text-3xl font-bold text-white mb-4 leading-tight">{item.role}</h3>
-                                    <div className="h-1 w-20 bg-gradient-to-r from-orange-500 to-transparent mb-6" />
-                                    <p className="text-lg text-gray-400 leading-relaxed">
+                                <div className="relative z-10">
+                                    <div className="inline-block bg-orange-500 text-black font-bold px-4 py-2 rounded-full text-lg mb-6 shadow-lg shadow-orange-500/20">
+                                        {item.year}
+                                    </div>
+                                    <h3 className="text-2xl md:text-4xl font-bold text-white mb-4 leading-tight">{item.role}</h3>
+                                    <div className="h-1 w-20 bg-gradient-to-r from-orange-500 to-transparent mb-4" />
+                                    <p className="text-normal md:text-xl text-gray-400 leading-relaxed">
                                         {item.desc}
                                     </p>
                                 </div>
 
-                                <div className="text-right">
-                                    <span className="text-orange-400 font-mono text-sm opacity-50 group-hover:opacity-100 transition-opacity">0{idx + 1} / 0{timeline.items.length}</span>
+                                <div className="text-right opacity-30 font-mono text-sm">
+                                    STEP {idx + 1}
                                 </div>
                             </div>
                         </div>
