@@ -49,9 +49,7 @@ a {
   backface-visibility: hidden;
 }
 
-.cursor-none {
-  cursor: none !important;
-}
+/* .cursor-none removed */
 
 .animate-spin-slow {
   animation: spin 12s linear infinite;
@@ -485,15 +483,7 @@ a {
   /* cyan-400 */
 }
 
-/* Custom Cursor Fix */
-.custom-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 9999;
-  mix-blend-mode: difference;
-}
+/* Cursor styles removed */
 
 /* Planet Image Fix */
 .planet-img {
