@@ -20,7 +20,7 @@ export const sections = [
         type: 'info'
     },
     {
-        id: 'experience',
+        id: 'timeline',
         title: 'Trajectoire',
         subtitle: 'Expérience',
         description: "Mon parcours académique et professionnel, une ascension constante.",
